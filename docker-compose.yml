@@ -1,0 +1,13 @@
+services:
+  db:
+    image: pgvector/pgvector:pg15
+    container_name: postgres_yt
+    restart: always
+    env_file: .env
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres:

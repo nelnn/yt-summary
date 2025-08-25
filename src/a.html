@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Jump Without Reload</title>
+</head>
+<body>
+    <h1>YouTube Jump Button Example</h1>
+
+    <!-- This is where the player will appear -->
+    <div id="player"></div>
+
+    <br>
+    <button onclick="jumpTo100()">Jump to 100s</button>
+
+    <!-- Load the IFrame Player API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let player;
+
+        // This function creates the YouTube player
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '315',
+                width: '560',
+                videoId: 'dKvFFf04clU',
+                playerVars: {
+                    autoplay: 1,
+                    start: 0
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            // Optional: play the video immediately
+            event.target.playVideo();
+        }
+
+        function jumpTo100() {
+            // Jump to 100 seconds without reloading
+            if (player && player.seekTo) {
+                player.seekTo(100, true); // true = allow seeking ahead if needed
+            }
+        }
+    </script>
+</body>
+</html>
