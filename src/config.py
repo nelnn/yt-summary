@@ -1,10 +1,10 @@
 """Enviroment configuration for the application."""
 
-import asyncpg
-from pydantic import ValidationInfo, field_validator
+from pydantic import BaseModel, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from src.database.context_manager import DBSession, db_engine
+from src.schemas.enums import LLMEnum
 
 
 class Settings(BaseSettings):
@@ -32,9 +32,11 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5433
     POSTGRES_CONNECTION_STR: str = ""
 
-    # OPENAI
+    # LLM API
     OPENAI_API_KEY: str = ""
+    OPENAI_MODEL: str = "gpt-5-mini-2025-08-07"
     GOOGLE_API_KEY: str = ""
+    GOOGLE_MODEL: str = "gemini-2.5-flash"
 
     MIGRATIONS_FOLDER_PATH: str = "migrations"
 
@@ -47,3 +49,7 @@ class Settings(BaseSettings):
 settings = Settings()
 db_conn = DBSession(settings.POSTGRES_CONNECTION_STR)
 engine = db_engine(settings.POSTGRES_CONNECTION_STR)
+llm_config: dict[str, dict] = {
+    LLMEnum.OPENAI: {"key": settings.OPENAI_API_KEY, "model": settings.OPENAI_MODEL},
+    LLMEnum.GOOGLE: {"key": settings.GOOGLE_API_KEY, "model": settings.GOOGLE_MODEL},
+}

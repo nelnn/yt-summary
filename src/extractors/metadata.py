@@ -1,13 +1,12 @@
 """Extract metadata from YouTube videos using yt-dlp."""
 
-from datetime import datetime
-
-import yt_dlp
+import aiohttp
+from pydantic import HttpUrl
 
 from src.schemas.models import YoutubeMetadata
 
 
-def extract_metadata(url: str) -> YoutubeMetadata:
+async def extract_metadata(url: str) -> YoutubeMetadata:
     """Extract metadata from a YouTube video URL.
 
     Args:
@@ -17,24 +16,23 @@ def extract_metadata(url: str) -> YoutubeMetadata:
         A tuple containing the YoutubeMetadata object and subtitles dictionary (if available).
 
     Raises:
-        ValueError: If no metadata is found.
+        aiohttp.ClientError: If there is an error fetching the metadata.
 
     """
-    opts = {"quiet": True, "skip_download": True}
-    with yt_dlp.YoutubeDL(opts) as ydl:
-        info = ydl.extract_info(url, download=False)
-    if isinstance(info, dict):
-        return YoutubeMetadata(
-            video_id=info["id"],
-            title=info["title"],
-            description=info["description"],
-            uploader=info["uploader"],
-            uploader_id=info["uploader_id"],
-            channel=info["channel"],
-            channel_id=info["channel_id"],
-            upload_date=datetime.strptime(info["upload_date"], "%Y%m%d").date(),
-            duration=info["duration"],
-            webpage_url=info["webpage_url"],
-            language=info.get("language"),
-        )
-    raise ValueError("Video not found")
+    async with aiohttp.ClientSession() as session:
+        async with session.get(
+            f"https://www.youtube.com/oembed?url={url}&format=json",
+            headers={"Accept": "application/json"},
+            raise_for_status=True,
+        ) as response:
+            metadata = await response.json()
+
+    return YoutubeMetadata(
+        video_id=url.split("?v=")[-1].split("&")[0],
+        title=metadata["title"],
+        author=metadata["author_name"],
+        channel_id=metadata["author_url"].split("@")[-1],
+        video_url=HttpUrl(url.split("&")[0]),
+        channel_url=HttpUrl(metadata["author_url"]),
+        thumbnail_url=HttpUrl(metadata.get("thumbnail_url")),
+    )
