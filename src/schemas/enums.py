@@ -6,3 +6,10 @@ class LLMEnum(StrEnum):
 
     OPENAI = "openai"
     GOOGLE = "google"
+
+
+class SummarisationModeEnum(StrEnum):
+    """Enum for different summarization modes."""
+
+    SIMPLE = "simple"
+    DETAILED = "detailed"

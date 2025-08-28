@@ -10,6 +10,7 @@ from llama_index.llms.openai import OpenAI
 
 from src.config import llm_config
 from src.schemas.enums import LLMEnum
+from src.schemas.models import YoutubeTranscriptRaw
 
 
 class BaseSummariser(abc.ABC):
@@ -36,11 +37,11 @@ class BaseSummariser(abc.ABC):
         return llm
 
     @abc.abstractmethod
-    async def summarise(self, text: str) -> str:
+    async def summarise(self, transcript: YoutubeTranscriptRaw) -> str:
         """Abstract method to summarise text.
 
         Args:
-            text: Text to summarise.
+            transcript: The transcript text to summarise.
 
         Returns:
             Summarised text.

@@ -43,3 +43,27 @@ TIMESTAMPED_CONSOLIDATION_PROMPT = """
 
     Here is the high level summary as well as the timestamped summary of key points:
     """
+
+
+SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE = """
+    You are an expert summarizer and question answerer.
+    Given the following document, give the metadata of the video such as title and author and
+    generate a concise, high-level summary.
+    After the summary, generate a list of insightful questions that this document can answer,
+    and provide brief, accurate answers to each.
+    There's no need prompt the user to ask questions, as this is a self-contained summary and Q&A.
+
+    RULES:
+        - Give the Youtube metada at the top.
+        - The QA format should be:
+            (optional) Timestamps:
+                - timestamp 1
+                - timestamp 2
+                - etc.
+            Q: Question? [timestamp1, timestamp2, ...]
+            A: Answer. [timestamp1, timestamp2, ...]
+
+    Document:\n{context_str}\n\n
+
+    Here is the video information and the summary with Q&A:\n
+"""

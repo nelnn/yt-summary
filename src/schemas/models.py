@@ -35,4 +35,4 @@ class YoutubeTranscriptRaw(BaseModel):
     """
 
     metadata: YoutubeMetadata
-    transcript: str
+    text: str
