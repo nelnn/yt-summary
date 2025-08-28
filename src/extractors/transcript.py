@@ -57,7 +57,7 @@ class TranscriptExtractor:
             extract_metadata(url),
         )
 
-        return YoutubeTranscriptRaw(metadata=metadata, transcript=transcript)
+        return YoutubeTranscriptRaw(metadata=metadata, text=transcript)
 
     def fetch_transcript(
         self, url: str, languages: Iterable[str] | None = None, *, preserve_formatting: bool = False
