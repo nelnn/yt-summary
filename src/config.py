@@ -36,7 +36,9 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-5-mini-2025-08-07"
     GOOGLE_API_KEY: str = ""
-    GOOGLE_MODEL: str = "gemini-2.5-flash"
+    GOOGLE_MODEL: str = "gemini-1.5-flash"
+    ANTHROPIC_API_KEY: str = ""
+    ANTHROPIC_MODEL: str = "claude-3-5-haiku-20241022"
 
     MIGRATIONS_FOLDER_PATH: str = "migrations"
 
@@ -49,7 +51,3 @@ class Settings(BaseSettings):
 settings = Settings()
 db_conn = DBSession(settings.POSTGRES_CONNECTION_STR)
 engine = db_engine(settings.POSTGRES_CONNECTION_STR)
-llm_config: dict[str, dict] = {
-    LLMEnum.OPENAI: {"key": settings.OPENAI_API_KEY, "model": settings.OPENAI_MODEL},
-    LLMEnum.GOOGLE: {"key": settings.GOOGLE_API_KEY, "model": settings.GOOGLE_MODEL},
-}
