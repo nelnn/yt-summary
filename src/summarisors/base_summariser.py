@@ -3,14 +3,14 @@
 import abc
 import os
 
-import openai
 from llama_index.core.llms.function_calling import FunctionCallingLLM
+from llama_index.llms.anthropic import Anthropic
 from llama_index.llms.google_genai import GoogleGenAI
 from llama_index.llms.openai import OpenAI
 
-from src.config import llm_config
+from src.llm_config import llm_configs
 from src.schemas.enums import LLMEnum
-from src.schemas.models import YoutubeTranscriptRaw
+from src.schemas.models import LLMModel, YoutubeTranscriptRaw
 
 
 class BaseSummariser(abc.ABC):
@@ -21,20 +21,30 @@ class BaseSummariser(abc.ABC):
 
     """
 
-    def __init__(self, model: LLMEnum) -> None:
-        self.model = self._get_model(model)
+    def __init__(self, llm: LLMModel) -> None:
+        self.model = self._get_model(llm)
 
     @staticmethod
-    def _get_model(model: LLMEnum) -> FunctionCallingLLM:
-        creds = llm_config[model]
-        match model:
+    def _get_model(llm: LLMModel) -> FunctionCallingLLM:
+        """Get the LLM model based on the provided configuration.
+
+        Args:
+            llm: LLM model model.
+
+        Returns:
+            An instance of the selected LLM model.
+
+        """
+        opts = llm_configs[llm.provider]
+        os.environ[opts.key_name] = os.getenv(opts.key_name) or opts.default_key
+        match llm.provider:
             case LLMEnum.OPENAI:
-                os.environ["OPENAI_API_KEY"] = creds["key"]
-                openai.api_key = os.environ["OPENAI_API_KEY"]
-                llm = OpenAI(temperature=0, api_key=creds["key"], model=creds["model"])
+                llm_model = OpenAI(temperature=0, model=llm.model)
             case LLMEnum.GOOGLE:
-                llm = GoogleGenAI(temperature=0, api_key=creds["key"], model=creds["model"])
-        return llm
+                llm_model = GoogleGenAI(temperature=0, model=llm.model)
+            case LLMEnum.ANTHROPIC:
+                llm_model = Anthropic(temperature=0, model=llm.model)
+        return llm_model
 
     @abc.abstractmethod
     async def summarise(self, transcript: YoutubeTranscriptRaw) -> str:

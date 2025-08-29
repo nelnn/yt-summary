@@ -6,6 +6,7 @@ class LLMEnum(StrEnum):
 
     OPENAI = "openai"
     GOOGLE = "google"
+    ANTHROPIC = "anthropic"
 
 
 class SummarisationModeEnum(StrEnum):
