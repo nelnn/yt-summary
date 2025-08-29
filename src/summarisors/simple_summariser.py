@@ -32,11 +32,11 @@ class SimpleSummariser(BaseSummariser):
             response_mode=ResponseMode.COMPACT,
             use_async=True,
         )
-        doc_summary_index = DocumentSummaryIndex.from_documents(
+        index = DocumentSummaryIndex.from_documents(
             [docs],
             llm=self.model,
             transformations=[splitter],
             response_synthesizer=response_synthesizer,
             show_progress=True,
         )
-        return doc_summary_index.get_document_summary(transcript.metadata.video_id)
+        return index.get_document_summary(transcript.metadata.video_id)
