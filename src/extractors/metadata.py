@@ -3,6 +3,7 @@
 import aiohttp
 from pydantic import HttpUrl
 
+from src.schemas.exceptions import MetadataNotFoundError
 from src.schemas.models import YoutubeMetadata
 
 
@@ -16,16 +17,22 @@ async def extract_metadata(url: str) -> YoutubeMetadata:
         A tuple containing the YoutubeMetadata object and subtitles dictionary (if available).
 
     Raises:
-        aiohttp.ClientError: If there is an error fetching the metadata.
+        MetadataNotFoundError: If there is an error fetching the metadata.
 
     """
-    async with aiohttp.ClientSession() as session:
-        async with session.get(
-            f"https://www.youtube.com/oembed?url={url}&format=json",
-            headers={"Accept": "application/json"},
-            raise_for_status=True,
-        ) as response:
-            metadata = await response.json()
+    if "youtube.com" not in url:
+        url = f"https://www.youtube.com/watch?v={url}"
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                f"https://www.youtube.com/oembed?url={url}&format=json",
+                headers={"Accept": "application/json"},
+                raise_for_status=True,
+            ) as response:
+                metadata = await response.json()
+    except aiohttp.ClientError as e:
+        raise MetadataNotFoundError(e) from e
 
     return YoutubeMetadata(
         video_id=url.split("?v=")[-1].split("&")[0],

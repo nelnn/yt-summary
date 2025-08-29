@@ -2,6 +2,8 @@
 
 from pydantic import BaseModel, HttpUrl
 
+from src.schemas.enums import LLMEnum
+
 
 class YoutubeMetadata(BaseModel):
     """YouTube video metadata model.
@@ -30,9 +32,23 @@ class YoutubeTranscriptRaw(BaseModel):
     """YouTube video metadata with raw transcript.
 
     Attributes:
-        transcript: The raw transcript text.
+        metadata: The metadata of the YouTube video.
+        text: transcript text.
 
     """
 
     metadata: YoutubeMetadata
     text: str
+
+
+class LLMModel(BaseModel):
+    """Language model configuration.
+
+    Attributes:
+        provider: The provider of the language model.
+        model: The specific model to use.
+
+    """
+
+    provider: LLMEnum
+    model: str

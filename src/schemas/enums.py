@@ -14,3 +14,11 @@ class SummarisationModeEnum(StrEnum):
 
     SIMPLE = "simple"
     DETAILED = "detailed"
+
+
+class FileFormatEnum(StrEnum):
+    """Enum for different file formats."""
+
+    TXT = "txt"
+    MD = "md"
+    HTML = "html"
