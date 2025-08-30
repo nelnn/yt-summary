@@ -4,7 +4,7 @@ import aiohttp
 import pytest
 
 from yt_summary.extractors.metadata import extract_metadata
-from yt_summary.schemas.exceptions import MetadataNotFoundError
+from yt_summary.schemas.exceptions import MetadataNotFoundException
 from yt_summary.schemas.models import YoutubeMetadata
 
 
@@ -25,5 +25,5 @@ async def test_extract_metadata(fake_youtube_metadata_json):
 async def test_extract_metadata_failure():
     test_url = "https://www.youtube.com/watch?v=failure123"
     with patch("aiohttp.ClientSession.get", side_effect=aiohttp.ClientError("Mocked connection error")):
-        with pytest.raises(MetadataNotFoundError):
+        with pytest.raises(MetadataNotFoundException):
             await extract_metadata(test_url)

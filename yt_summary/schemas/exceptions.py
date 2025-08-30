@@ -1,11 +1,11 @@
 """Exceptions raised by yt-summary."""
 
 
-class YTSummaryError(Exception):
+class YTSummaryExpection(Exception):
     """Base class for all exceptions raised by yt-summary."""
 
 
-class MetadataNotFoundError(YTSummaryError):
+class MetadataNotFoundException(YTSummaryExpection):
     """Raised when no metadata is found for the provided URL or video ID."""
 
     def __init__(self, aiohttp_client_error: Exception) -> None:

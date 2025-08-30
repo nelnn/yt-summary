@@ -3,7 +3,7 @@
 import aiohttp
 from pydantic import HttpUrl
 
-from yt_summary.schemas.exceptions import MetadataNotFoundError
+from yt_summary.schemas.exceptions import MetadataNotFoundException
 from yt_summary.schemas.models import YoutubeMetadata
 
 
@@ -32,7 +32,7 @@ async def extract_metadata(url: str) -> YoutubeMetadata:
             ) as response:
                 metadata = await response.json()
     except aiohttp.ClientError as e:
-        raise MetadataNotFoundError(e) from e
+        raise MetadataNotFoundException(e) from e
 
     return YoutubeMetadata(
         video_id=url.split("?v=")[-1].split("&")[0],
