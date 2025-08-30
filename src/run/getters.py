@@ -5,7 +5,7 @@ from src.summarisers.base_summariser import BaseSummariser
 from src.summarisers.simple_summariser import SimpleSummariser
 from src.summarisers.timestamp_summariser import TimestampedSummariser
 
-summariser_dict: dict[SummarisationModeEnum, type[BaseSummariser]] = {
+summarisers: dict[SummarisationModeEnum, type[BaseSummariser]] = {
     SummarisationModeEnum.SIMPLE: SimpleSummariser,
-    SummarisationModeEnum.DETAILED: TimestampedSummariser,
+    SummarisationModeEnum.REFINE: TimestampedSummariser,
 }

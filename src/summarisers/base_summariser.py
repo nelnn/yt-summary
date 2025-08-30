@@ -10,7 +10,7 @@ from llama_index.llms.google_genai import GoogleGenAI
 from llama_index.llms.openai import OpenAI
 
 from src.llm_config import llm_configs
-from src.schemas.enums import LLMEnum
+from src.schemas.enums import LLMProvidersEnum
 from src.schemas.models import LLMAndEmbeddingModel, LLMModel, YoutubeTranscriptRaw
 
 
@@ -40,13 +40,13 @@ class BaseSummariser(abc.ABC):
         os.environ[opts.key_name] = os.getenv(opts.key_name) or opts.default_key
         embed_model = None
         match llm.provider:
-            case LLMEnum.OPENAI:
+            case LLMProvidersEnum.OPENAI:
                 llm_model = OpenAI(temperature=0, model=llm.model)
                 embed_model = OpenAIEmbedding()
-            case LLMEnum.GOOGLE:
+            case LLMProvidersEnum.GOOGLE:
                 llm_model = GoogleGenAI(temperature=0, model=llm.model)
                 embed_model = GoogleGenAIEmbedding()
-            case LLMEnum.ANTHROPIC:
+            case LLMProvidersEnum.ANTHROPIC:
                 llm_model = Anthropic(temperature=0, model=llm.model)
         if not embed_model:
             embed_model = OpenAIEmbedding()

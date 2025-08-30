@@ -3,7 +3,7 @@
 from enum import StrEnum
 
 
-class LLMEnum(StrEnum):
+class LLMProvidersEnum(StrEnum):
     """Enum for different Large Language Models (LLMs)."""
 
     OPENAI = "openai"
@@ -15,7 +15,7 @@ class SummarisationModeEnum(StrEnum):
     """Enum for different summarization modes."""
 
     SIMPLE = "simple"
-    DETAILED = "detailed"
+    REFINE = "refine"
 
 
 class FileFormatEnum(StrEnum):

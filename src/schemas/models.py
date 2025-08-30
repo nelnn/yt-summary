@@ -4,7 +4,7 @@ from llama_index.embeddings.openai.base import BaseEmbedding
 from llama_index.llms.anthropic.base import FunctionCallingLLM
 from pydantic import BaseModel, HttpUrl
 
-from src.schemas.enums import LLMEnum
+from src.schemas.enums import LLMProvidersEnum
 
 
 class YoutubeMetadata(BaseModel):
@@ -52,7 +52,7 @@ class LLMModel(BaseModel):
 
     """
 
-    provider: LLMEnum
+    provider: LLMProvidersEnum
     model: str
 
 

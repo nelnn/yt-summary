@@ -3,7 +3,7 @@
 from pydantic import BaseModel
 
 from src.config import settings
-from src.schemas.enums import LLMEnum
+from src.schemas.enums import LLMProvidersEnum
 
 
 class LLMConfigs(BaseModel):
@@ -45,8 +45,8 @@ class ANTHROPICConfig(LLMConfigs):
     default_model: str = settings.ANTHROPIC_MODEL
 
 
-llm_configs: dict[LLMEnum, LLMConfigs] = {
-    LLMEnum.OPENAI: OPENAIConfig(),
-    LLMEnum.GOOGLE: GOOGLEConfig(),
-    LLMEnum.ANTHROPIC: ANTHROPICConfig(),
+llm_configs: dict[LLMProvidersEnum, LLMConfigs] = {
+    LLMProvidersEnum.OPENAI: OPENAIConfig(),
+    LLMProvidersEnum.GOOGLE: GOOGLEConfig(),
+    LLMProvidersEnum.ANTHROPIC: ANTHROPICConfig(),
 }
