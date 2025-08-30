@@ -50,9 +50,11 @@ class TestTranscriptExtractor:
             thumbnail_url=HttpUrl("https://i.ytimg.com/vi/dQw4w9W/hqdefault.jpg"),
         )
 
-        with mock.patch("src.extractors.transcript.extract_metadata", return_value=mock_metadata):
-            with mock.patch.object(self.extractor, "_afetch_transcript", return_value="This is a mocked transcript."):
-                result = await self.extractor.fetch(url, languages=["en", "de"])
+        with (
+            mock.patch("src.extractors.transcript.extract_metadata", return_value=mock_metadata),
+            mock.patch.object(self.extractor, "_afetch_transcript", return_value="This is a mocked transcript."),
+        ):
+            result = await self.extractor.fetch(url, languages=["en", "de"])
 
-                expected_result = YoutubeTranscriptRaw(text="This is a mocked transcript.", metadata=mock_metadata)
-                assert result == expected_result
+            expected_result = YoutubeTranscriptRaw(text="This is a mocked transcript.", metadata=mock_metadata)
+            assert result == expected_result
