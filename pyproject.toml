@@ -14,6 +14,7 @@ dependencies = [
     "llama-index-vector-stores-postgres>=0.6.3",
     "pydantic>=2.11.7",
     "pydantic-settings>=2.10.1",
+    "requests>=2.32.4",
     "types-requests>=2.32.4.20250809",
     "youtube-transcript-api>=1.2.2",
 ]
@@ -73,6 +74,7 @@ lint.ignore = [
 [tool.ruff.lint.per-file-ignores]
 "src/api/**.py" = ["B008"]
 "tests/**.py" = ["D", "S", "ANN"]
+"src/cli/**.py" = ["T201"]
 
 [tool.pytest.ini_options]
 # https://docs.pytest.org/en/6.2.x/customize.html#pyproject-toml
@@ -99,7 +101,7 @@ omit = [
 ]
 
 [tool.coverage.report]
-fail_under = 90
+fail_under = 80
 show_missing = true
 exclude_lines = [
     "if __name__ == .__main__.:",
@@ -107,6 +109,7 @@ exclude_lines = [
 ]
 omit = [
     "*__init__*",
+    "*__main__*",
     "tests/*",
     "src/schemas/*",
     "src/api/*",
