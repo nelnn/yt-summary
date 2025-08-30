@@ -1,10 +1,6 @@
 """Enviroment configuration for the application."""
 
-from pydantic import BaseModel, ValidationInfo, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
-from src.database.context_manager import DBSession, db_engine
-from src.schemas.enums import LLMEnum
 
 
 class Settings(BaseSettings):
@@ -24,14 +20,6 @@ class Settings(BaseSettings):
     DOCS_URL: str = "/docs"
     REDOC_URL: str = "/redoc"
 
-    # POSTGRESQL
-    POSTGRES_USER: str = ""
-    POSTGRES_DB: str = ""
-    POSTGRES_PASSWORD: str = ""
-    POSTGRES_HOST: str = "localhost"
-    POSTGRES_PORT: int = 5433
-    POSTGRES_CONNECTION_STR: str = ""
-
     # LLM API
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-5-mini-2025-08-07"
@@ -42,12 +30,5 @@ class Settings(BaseSettings):
 
     MIGRATIONS_FOLDER_PATH: str = "migrations"
 
-    @field_validator("POSTGRES_CONNECTION_STR", mode="before")
-    def assemble_wms_sqlalchemy_connection_string(cls, v: str, info: ValidationInfo) -> str:
-        """Assemble the PostgreSQL connection string from environment variables."""
-        return f"postgresql://{info.data['POSTGRES_USER']}:{info.data['POSTGRES_PASSWORD']}@{info.data['POSTGRES_HOST']}:{info.data['POSTGRES_PORT']}/{info.data['POSTGRES_DB']}"
-
 
 settings = Settings()
-db_conn = DBSession(settings.POSTGRES_CONNECTION_STR)
-engine = db_engine(settings.POSTGRES_CONNECTION_STR)

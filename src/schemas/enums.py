@@ -1,3 +1,5 @@
+"""Enums."""
+
 from enum import StrEnum
 
 

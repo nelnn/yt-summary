@@ -1,11 +1,10 @@
+import pytest
 from pydantic import HttpUrl
+
+from src.llm_config import llm_configs
 from src.schemas.enums import LLMEnum
 from src.schemas.models import LLMModel, YoutubeMetadata, YoutubeTranscriptRaw
 from src.summarisers.simple_summariser import SimpleSummariser
-
-import pytest
-
-from src.llm_config import llm_configs
 
 
 @pytest.fixture
