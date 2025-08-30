@@ -7,9 +7,9 @@ from requests import Session
 from youtube_transcript_api import FetchedTranscript, YouTubeTranscriptApi
 from youtube_transcript_api.proxies import ProxyConfig
 
-from src.extractors.metadata import extract_metadata
-from src.schemas.models import YoutubeTranscriptRaw
-from src.utils.async_helpers import to_async
+from yt_summary.extractors.metadata import extract_metadata
+from yt_summary.schemas.models import YoutubeTranscriptRaw
+from yt_summary.utils.async_helpers import to_async
 
 
 class TranscriptExtractor:

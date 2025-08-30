@@ -5,10 +5,10 @@ from llama_index.llms.anthropic import Anthropic
 from llama_index.llms.google_genai import GoogleGenAI
 from llama_index.llms.openai import OpenAI
 
-from src.llm_config import llm_configs
-from src.schemas.enums import LLMProvidersEnum
-from src.schemas.models import LLMModel, YoutubeTranscriptRaw
-from src.summarisers.base_summariser import BaseSummariser
+from yt_summary.llm_config import llm_configs
+from yt_summary.schemas.enums import LLMProvidersEnum
+from yt_summary.schemas.models import LLMModel, YoutubeTranscriptRaw
+from yt_summary.summarisers.base_summariser import BaseSummariser
 
 
 class MockBaseSummariser(BaseSummariser):

@@ -4,13 +4,13 @@ import asyncio
 
 from llama_index.core.node_parser import SentenceSplitter
 
-from src.schemas.models import YoutubeTranscriptRaw
-from src.summarisers.base_summariser import BaseSummariser
-from src.summarisers.templates import TIMESTAMPED_CONSOLIDATION_PROMPT, TIMESTAMPED_SUMMARY_CHUCKED_PROMPT
+from yt_summary.schemas.models import YoutubeTranscriptRaw
+from yt_summary.summarisers.base_summariser import BaseSummariser
+from yt_summary.summarisers.templates import TIMESTAMPED_CONSOLIDATION_PROMPT, TIMESTAMPED_SUMMARY_CHUCKED_PROMPT
 
 
-class TimestampedSummariser(BaseSummariser):
-    """Class for generating timestamped summaries from video transcripts."""
+class RefinedSummariser(BaseSummariser):
+    """Class for generating refined timestamped summaries from video transcripts."""
 
     async def summarise(self, transcript: YoutubeTranscriptRaw) -> str:
         """Generate a timestamped summary from the provided text.

@@ -72,9 +72,10 @@ lint.ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"src/api/**.py" = ["B008"]
+"yt_summary/api/**.py" = ["B008"]
 "tests/**.py" = ["D", "S", "ANN"]
-"src/cli/**.py" = ["T201"]
+"yt_summary/cli/**.py" = ["T201"]
+"yt_summary/__main__.py" = ["T201"]
 
 [tool.pytest.ini_options]
 # https://docs.pytest.org/en/6.2.x/customize.html#pyproject-toml
@@ -93,7 +94,7 @@ addopts = [
 ]
 
 [tool.coverage.run]
-source = ["src"]
+source = ["yt_summary"]
 omit = [
     "*__init__*",
     "tests/*",
@@ -111,9 +112,9 @@ omit = [
     "*__init__*",
     "*__main__*",
     "tests/*",
-    "src/schemas/*",
-    "src/api/*",
-    "src/run/*",
-    "src/database/*",
-    "src/embeddings/*",
+    "yt_summary/schemas/*",
+    "yt_summary/api/*",
+    "yt_summary/run/*",
+    "yt_summary/database/*",
+    "yt_summary/embeddings/*",
 ]

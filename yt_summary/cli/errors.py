@@ -2,7 +2,7 @@
 
 import argparse
 
-from src.schemas.enums import LLMProvidersEnum
+from yt_summary.schemas.enums import LLMProvidersEnum
 
 
 def provider_type(provider: str) -> LLMProvidersEnum:

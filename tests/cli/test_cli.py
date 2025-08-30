@@ -1,10 +1,10 @@
 import os
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from src.cli.cli import YTSummaryCLI
-from src.schemas.enums import LLMProvidersEnum, SummarisationModeEnum
+from yt_summary.cli.cli import YTSummaryCLI
+from yt_summary.schemas.enums import LLMProvidersEnum, SummarisationModesEnum
 
 
 @pytest.mark.asyncio
@@ -27,11 +27,11 @@ def test_run_llm_provider_invalid():
         cli._parse_args()
 
 
-@pytest.mark.parametrize("mode", [mode.value for mode in SummarisationModeEnum])
+@pytest.mark.parametrize("mode", [mode.value for mode in SummarisationModesEnum])
 def test_run_summarisation_mode(mode):
     cli = YTSummaryCLI(["www.foo.com", "--mode", mode])
     args = cli._parse_args()
-    assert args.mode in [e.value for e in SummarisationModeEnum]
+    assert args.mode in [e.value for e in SummarisationModesEnum]
 
 
 @pytest.mark.asyncio
@@ -45,10 +45,11 @@ async def test_run_cli_no_api_key():
 @pytest.mark.asyncio
 async def test_run_cli_get_summary_success(mock_transcript, mock_summariser):
     cli = YTSummaryCLI(["www.foo.com"])
+    mock_summariser_factory = MagicMock(return_value=mock_summariser)
     with (
         patch.dict(os.environ, {"OPENAI_API_KEY": "testkey"}),
-        patch("src.extractors.transcript.TranscriptExtractor", return_value=mock_transcript),
-        patch("src.summarisers.simple_summariser.SimpleSummariser", return_value=mock_summariser),
+        patch("yt_summary.extractors.transcript.TranscriptExtractor", return_value=mock_transcript),
+        patch("yt_summary.run.getters.summarisers", {"simple": mock_summariser_factory}),
     ):
         result = await cli.run()
         assert result == "This is a summary."
@@ -63,7 +64,7 @@ async def test_run_cli_exception_handling():
 
     with (
         patch.dict(os.environ, {"OPENAI_API_KEY": "testkey"}),
-        patch("src.extractors.transcript.TranscriptExtractor", return_value=mock_transcript),
+        patch("yt_summary.extractors.transcript.TranscriptExtractor", return_value=mock_transcript),
     ):
         result = await cli.run()
         assert result == "Fetch failed"

@@ -4,9 +4,9 @@ from llama_index.core import Document, DocumentSummaryIndex, PromptTemplate, get
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.response_synthesizers.type import ResponseMode
 
-from src.schemas.models import YoutubeTranscriptRaw
-from src.summarisers.base_summariser import BaseSummariser
-from src.summarisers.templates import SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE
+from yt_summary.schemas.models import YoutubeTranscriptRaw
+from yt_summary.summarisers.base_summariser import BaseSummariser
+from yt_summary.summarisers.templates import SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE
 
 
 class SimpleSummariser(BaseSummariser):

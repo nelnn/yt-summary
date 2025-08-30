@@ -3,11 +3,8 @@
 import asyncio
 import logging
 import sys
-import time
 
-from src.cli.cli import YTSummaryCLI
-
-start = time.perf_counter()
+from yt_summary.cli.cli import YTSummaryCLI
 
 
 async def main() -> None:
@@ -16,8 +13,7 @@ async def main() -> None:
         level=logging.INFO,
         format="%(message)s",
     )
-    logger = logging.getLogger("yt-summary")
-    logger.info(await YTSummaryCLI(sys.argv[1:]).run())
+    print(await YTSummaryCLI(sys.argv[1:]).run())
 
 
 if __name__ == "__main__":

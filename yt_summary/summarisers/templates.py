@@ -61,8 +61,13 @@ SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE = """
                 - timestamp 2 - summary point 2
             Q: Question? [timestamp1, timestamp2, ...]
             A: Answer. [timestamp1, timestamp2, ...]
+        - Ignore Sponsor segments.
 
     Document:\n{context_str}\n\n
 
     Here is the video information and the summary with Q&A:\n
+
+    ... Your Reponse ...
+
+    END CONVERSATION.
 """

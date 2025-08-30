@@ -3,9 +3,9 @@ from unittest.mock import AsyncMock, patch
 import aiohttp
 import pytest
 
-from src.extractors.metadata import extract_metadata
-from src.schemas.exceptions import MetadataNotFoundError
-from src.schemas.models import YoutubeMetadata
+from yt_summary.extractors.metadata import extract_metadata
+from yt_summary.schemas.exceptions import MetadataNotFoundError
+from yt_summary.schemas.models import YoutubeMetadata
 
 
 @pytest.mark.asyncio

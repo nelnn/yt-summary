@@ -2,7 +2,7 @@ import time
 
 import pytest
 
-from src.utils.async_helpers import to_async
+from yt_summary.utils.async_helpers import to_async
 
 
 def blocking_func(a: int, b: int) -> int:

@@ -5,8 +5,8 @@ import os
 import sys
 from importlib.metadata import PackageNotFoundError, version
 
-import src.cli.errors as errors
-from src.schemas.enums import SummarisationModeEnum
+import yt_summary.cli.errors as errors
+from yt_summary.schemas.enums import SummarisationModesEnum
 
 
 class YTSummaryCLI:
@@ -22,7 +22,7 @@ class YTSummaryCLI:
         if not parsed_args.url:
             return "Please provide a YouTube video URL or ID."
 
-        from src.llm_config import llm_configs
+        from yt_summary.llm_config import llm_configs
 
         llm_config = llm_configs[parsed_args.provider]
 
@@ -33,9 +33,9 @@ class YTSummaryCLI:
         print(f"Provider: {parsed_args.provider.upper()} | Model: {parsed_args.model or llm_config.default_model}")
 
         try:
-            from src.extractors.transcript import TranscriptExtractor
-            from src.run.getters import summarisers
-            from src.schemas.models import LLMModel
+            from yt_summary.extractors.transcript import TranscriptExtractor
+            from yt_summary.run.getters import summarisers
+            from yt_summary.schemas.models import LLMModel
 
             llm_model = LLMModel(
                 provider=parsed_args.provider,
@@ -98,7 +98,7 @@ class YTSummaryCLI:
 
         parser.add_argument(
             "--mode",
-            type=SummarisationModeEnum,
+            type=SummarisationModesEnum,
             default="simple",
             help="Summarization mode: simple or detailed (default: simple).",
         )

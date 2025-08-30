@@ -4,7 +4,7 @@ install:
 	uv sync --dev --all-extras
 
 test:
-	uv run pytest --cov=src
+	uv run pytest --cov=yt_summary
 
 lint:
 	uv run ruff check --fix

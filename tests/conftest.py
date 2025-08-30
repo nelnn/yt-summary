@@ -3,9 +3,9 @@ from unittest.mock import AsyncMock
 import pytest
 from pydantic import HttpUrl
 
-from src.llm_config import llm_configs
-from src.schemas.enums import LLMProvidersEnum
-from src.schemas.models import LLMModel, YoutubeMetadata, YoutubeTranscriptRaw
+from yt_summary.llm_config import llm_configs
+from yt_summary.schemas.enums import LLMProvidersEnum
+from yt_summary.schemas.models import LLMModel, YoutubeMetadata, YoutubeTranscriptRaw
 
 
 @pytest.fixture

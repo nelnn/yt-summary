@@ -3,8 +3,8 @@ from unittest import mock
 import pytest
 from pydantic import HttpUrl
 
-from src.extractors.transcript import TranscriptExtractor
-from src.schemas.models import YoutubeMetadata, YoutubeTranscriptRaw
+from yt_summary.extractors.transcript import TranscriptExtractor
+from yt_summary.schemas.models import YoutubeMetadata, YoutubeTranscriptRaw
 
 
 @pytest.fixture
@@ -17,7 +17,7 @@ def patch_fetch_transcript(monkeypatch):
     def mock_fetch_transcript(url, languages=None, *, preserve_formatting=False):
         return "This is a mocked transcript."
 
-    monkeypatch.setattr("src.extractors.transcript.TranscriptExtractor.fetch_transcript", mock_fetch_transcript)
+    monkeypatch.setattr("yt_summary.extractors.transcript.TranscriptExtractor.fetch_transcript", mock_fetch_transcript)
 
 
 class TestTranscriptExtractor:
@@ -51,7 +51,7 @@ class TestTranscriptExtractor:
         )
 
         with (
-            mock.patch("src.extractors.transcript.extract_metadata", return_value=mock_metadata),
+            mock.patch("yt_summary.extractors.transcript.extract_metadata", return_value=mock_metadata),
             mock.patch.object(self.extractor, "_afetch_transcript", return_value="This is a mocked transcript."),
         ):
             result = await self.extractor.fetch(url, languages=["en", "de"])

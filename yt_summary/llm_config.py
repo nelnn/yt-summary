@@ -2,8 +2,8 @@
 
 from pydantic import BaseModel
 
-from src.config import settings
-from src.schemas.enums import LLMProvidersEnum
+from yt_summary.config import settings
+from yt_summary.schemas.enums import LLMProvidersEnum
 
 
 class LLMConfigs(BaseModel):

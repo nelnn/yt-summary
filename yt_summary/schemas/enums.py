@@ -11,16 +11,8 @@ class LLMProvidersEnum(StrEnum):
     ANTHROPIC = "anthropic"
 
 
-class SummarisationModeEnum(StrEnum):
+class SummarisationModesEnum(StrEnum):
     """Enum for different summarization modes."""
 
     SIMPLE = "simple"
     REFINE = "refine"
-
-
-class FileFormatEnum(StrEnum):
-    """Enum for different file formats."""
-
-    TXT = "txt"
-    MD = "md"
-    HTML = "html"
