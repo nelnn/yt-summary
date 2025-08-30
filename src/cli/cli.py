@@ -110,7 +110,7 @@ class YTSummaryCLI:
         parser.add_argument(
             "--output",
             "-o",
-            default=os.getcwd(),
+            default=None,
             help="Save summary as text/markdown/html",
         )
 

@@ -1,5 +1,7 @@
 """Pydantic models."""
 
+from llama_index.embeddings.openai.base import BaseEmbedding
+from llama_index.llms.anthropic.base import FunctionCallingLLM
 from pydantic import BaseModel, HttpUrl
 
 from src.schemas.enums import LLMEnum
@@ -52,3 +54,16 @@ class LLMModel(BaseModel):
 
     provider: LLMEnum
     model: str
+
+
+class LLMAndEmbeddingModel(BaseModel):
+    """Language model and embedding model pair.
+
+    Attributes:
+        llm: The language model instance.
+        embed_model: The embedding model instance.
+
+    """
+
+    llm: FunctionCallingLLM
+    embed_model: BaseEmbedding
