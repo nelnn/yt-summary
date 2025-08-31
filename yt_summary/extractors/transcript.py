@@ -149,5 +149,4 @@ class TranscriptExtractor:
                     f"({int(snippets[i - 1].start)}s)] "
                     f"{' '.join(buffer)}"
                 )
-
         return "".join(text).strip()

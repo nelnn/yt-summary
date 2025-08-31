@@ -16,10 +16,10 @@ async def get_youtube_summary(
     """Run the summarisation pipeline.
 
     Args:
-        url (str): The YouTube video URL.
-        llm_provider (str, optional): The LLM provider to use. Defaults to "openai".
-        model_name (str, optional): The model name to use. Defaults to "gpt-5-mini-2025-08-07".
-        mode (str, optional): The summarisation mode. Defaults to "simple".
+        url: The YouTube video URL.
+        llm_provider: The LLM provider to use. Defaults to "openai".
+        model_name: The model name to use. Defaults to "gpt-5-mini-2025-08-07".
+        mode: The summarisation mode. Defaults to "simple".
 
     Returns:
         str: The summary of the YouTube video.
