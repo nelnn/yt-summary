@@ -2,6 +2,7 @@ from unittest import mock
 
 import pytest
 from youtube_transcript_api import FetchedTranscriptSnippet
+
 from yt_summary.extractors.transcript import TranscriptExtractor
 
 
@@ -19,12 +20,11 @@ def snippets():
     ]
 
 
-
-
 @pytest.fixture(autouse=True)
 def patch_fetch_transcript(monkeypatch, fake_fetched_transcript):
     def mock_fetch_transcript(url, languages=None, *, preserve_formatting=False):
         return fake_fetched_transcript
+
     monkeypatch.setattr("yt_summary.extractors.transcript.TranscriptExtractor.fetch_transcript", mock_fetch_transcript)
 
 
@@ -40,7 +40,9 @@ class TestTranscriptExtractor:
     @pytest.mark.asyncio
     async def test__afetch_transcript(self, url, fake_fetched_transcript):
         with mock.patch.object(
-            self.extractor, "fetch_transcript", return_value=fake_fetched_transcript,
+            self.extractor,
+            "fetch_transcript",
+            return_value=fake_fetched_transcript,
         ) as mock_fetch:
             transcript = await self.extractor._afetch_transcript(url)
             mock_fetch.assert_called_once_with(url=url, languages=None, preserve_formatting=False)
@@ -51,7 +53,6 @@ class TestTranscriptExtractor:
         with mock.patch.object(self.extractor, "fetch", return_value=fake_youtube_transcript_raw):
             result = await self.extractor.fetch(url, languages=["en", "de"])
             assert result == fake_youtube_transcript_raw
-
 
 
 def test__stitch_snippets(snippets):
