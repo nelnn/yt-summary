@@ -26,7 +26,6 @@ class YTSummaryCLI:
 
         llm_config = llm_configs[parsed_args.provider]
 
-        # if not os.getenv(llm_config.key_name) and not llm_config.default_key:
         if not os.getenv(llm_config.key_name):
             return f"{llm_config.key_name} environment variable not set."
 
@@ -78,7 +77,7 @@ class YTSummaryCLI:
             "-p",
             type=errors.provider_type,
             default="openai",
-            help="Language model provider to use. Default is openai.",
+            help="Language model provider to use. (default: openai)",
         )
 
         parser.add_argument(
@@ -92,7 +91,6 @@ class YTSummaryCLI:
             "-m",
             type=str,
             default=None,
-            metavar="<model_name>",
             help="Model name for the provider.",
         )
 
@@ -100,7 +98,7 @@ class YTSummaryCLI:
             "--mode",
             type=SummarisationModesEnum,
             default="simple",
-            help="Summarization mode: simple or detailed (default: simple).",
+            help="Summarization mode: `simple` or `refined` (default: simple).",
         )
 
         if len(sys.argv) == 1:
