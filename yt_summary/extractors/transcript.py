@@ -131,7 +131,7 @@ class TranscriptExtractor:
             buffer.append(snippets[i].text)
 
             if start_time is None:
-                start_time = snippets[i].start
+                start_time = int(snippets[i].start)
 
             if "." in snippets[i].text:
                 sentence_count += 1
@@ -145,7 +145,9 @@ class TranscriptExtractor:
                 start_time = None
             if i == len(snippets) - 1:
                 text.append(
-                    f"[{convert_to_readable_time(snippets[i - 1].start)} ({snippets[i - 1].start}s)] {' '.join(buffer)}"
+                    f"[{convert_to_readable_time(int(snippets[i - 1].start))} "
+                    f"({int(snippets[i - 1].start)}s)] "
+                    f"{' '.join(buffer)}"
                 )
 
         return "".join(text).strip()

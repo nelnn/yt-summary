@@ -58,4 +58,4 @@ class TestTranscriptExtractor:
 def test__stitch_snippets(snippets):
     extractor = TranscriptExtractor()
     text = extractor._stitch_snippets(snippets, sentences_per_timestamp_group=1)
-    assert text == "[00:00 (0.0s)] This is a test. [00:05 (5.0s)] Snippet three!"
+    assert text == "[00:00 (0s)] This is a test. [00:05 (5s)] Snippet three!"

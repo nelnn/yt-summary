@@ -10,3 +10,7 @@ lint:
 	uv run ruff check --fix
 	uv run ruff format
 	uv run ty check
+
+lint-test:
+	uv run ruff check tests/
+	uv run ruff format tests/
