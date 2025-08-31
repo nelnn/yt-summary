@@ -28,6 +28,9 @@ class YoutubeMetadata(BaseModel):
     video_url: HttpUrl
     channel_url: HttpUrl
     thumbnail_url: HttpUrl | None = None
+    is_generated: bool | None = None
+    language: str | None = None
+    language_code: str | None = None
 
 
 class YoutubeTranscriptRaw(BaseModel):

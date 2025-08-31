@@ -2,6 +2,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 from pydantic import HttpUrl
+from youtube_transcript_api import FetchedTranscript, FetchedTranscriptSnippet
 
 from yt_summary.llm_config import llm_configs
 from yt_summary.schemas.enums import LLMProvidersEnum
@@ -9,15 +10,29 @@ from yt_summary.schemas.models import LLMModel, YoutubeMetadata, YoutubeTranscri
 
 
 @pytest.fixture
+def fake_fetched_transcript():
+    return FetchedTranscript(
+        snippets=[FetchedTranscriptSnippet(text="This is a mocked transcript.", start=0.0, duration=5.0)],
+        video_id="dQw4w9WgXcQ",
+        is_generated=False,
+        language="en",
+        language_code="en",
+    )
+
+
+@pytest.fixture
 def fake_youtube_metadata():
     return YoutubeMetadata(
-        video_id="123",
+        video_id="dQw4w9WgXcQ",
         title="Test Video",
         author="Test Author",
         channel_id="channel123",
         video_url=HttpUrl("http://youtube.com/watch?v=123"),
         channel_url=HttpUrl("http://youtube.com/channel/channel123"),
         thumbnail_url=HttpUrl("http://youtube.com/thumbnail.jpg"),
+        is_generated=False,
+        language="en",
+        language_code="en",
     )
 
 

@@ -1,14 +1,15 @@
 """Prompt templates for video summarization tasks."""
 
 TIMESTAMPED_SUMMARY_CHUCKED_PROMPT = """
-    You are given a portion of a youtube transcript with timestamps labeled as <<t=timestamp>>.
+    You are given a portion of a youtube transcript with timestamps
+    labeled as [%H:%M:%S or %M:%S (timestamp in seconds)].
     Create a summary of the key points in this section with their corresponding timestamps.
     Since each timestamp represents a less than or equal to one coherent sentence,
     you should group multiple timestamps together if they relate to the same key point,
     and use the earliest timestamp for that point.
 
     FORMATTING RULES:
-    - Extract timestamps from <<t=timestamp>> markers
+    - Extract timestamps from [timestamp] markers
     - Format each point as: [timestamp] Summary text
     - Focus on main topics, arguments, and examples
     - Be concise but comprehensive
@@ -60,7 +61,7 @@ SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE = """
                 - timestamp 1 - summary point 1
                 - timestamp 2 - summary point 2
             Q: Question? [timestamp1, timestamp2, ...]
-            A: Answer. [timestamp1, timestamp2, ...]
+            A: Answer.
         - Ignore Sponsor segments.
 
     Document:\n{context_str}\n\n

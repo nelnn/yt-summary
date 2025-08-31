@@ -12,7 +12,14 @@ class LLMProvidersEnum(StrEnum):
 
 
 class SummarisationModesEnum(StrEnum):
-    """Enum for different summarization modes."""
+    """Enum for different summarization modes.
+
+    Attributes:
+        SIMPLE: Simple summarisation using the `COMPACT` response mode in LlamaIndex.
+        REFINE: Refined summarisation by iteratively refining the summary with each chunk of text
+        that fed to the LLM directly.
+
+    """
 
     SIMPLE = "simple"
     REFINE = "refine"
