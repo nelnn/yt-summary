@@ -16,6 +16,11 @@ class YTSummaryCLI:
         """Run the CLI tool."""
         parsed_args = self._parse_args()
 
+        if parsed_args.list_providers:
+            from yt_summary.schemas.enums import LLMProvidersEnum
+
+            return f"Supported LLM Providers: {[e.value for e in LLMProvidersEnum]}"
+
         if not parsed_args.url:
             return "Please provide a YouTube video URL or ID."
 
