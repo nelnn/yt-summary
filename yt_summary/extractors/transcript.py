@@ -17,9 +17,7 @@ class TranscriptExtractor:
     """Transcript extractor. A wrapper around YouTubeTranscriptApi.
 
     Attributes:
-        video_id: video id
         ytt_api: YouTubeTranscriptApi instance
-        _transcript: fetched transcript
 
     """
 

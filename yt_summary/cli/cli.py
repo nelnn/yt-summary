@@ -52,7 +52,7 @@ class YTSummaryCLI:
             summariser = summarisers[parsed_args.mode](llm=llm_model)
             return await summariser.summarise(transcript)
 
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             return str(e)
 
     def _get_version(self) -> str:
