@@ -7,14 +7,15 @@ import sys
 from yt_summary.cli.cli import YTSummaryCLI
 
 
-async def main() -> None:
+def main() -> None:
     """Run the CLI tool."""
     logging.basicConfig(
         level=logging.INFO,
         format="%(message)s",
     )
-    print(await YTSummaryCLI(sys.argv[1:]).run())
+
+    print(asyncio.run(YTSummaryCLI(sys.argv[1:]).run()))
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

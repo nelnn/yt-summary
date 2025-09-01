@@ -78,11 +78,9 @@ class TranscriptExtractor:
 
         """
         video_id = url.split("?v=")[-1].split("&")[0]
-        if not languages:
-            languages = ["en"]
         return self.ytt_api.fetch(
             video_id,
-            languages=languages,
+            languages=languages if languages else ["en"],
             preserve_formatting=preserve_formatting,
         )
 

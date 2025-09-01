@@ -5,9 +5,6 @@ import os
 import sys
 from importlib.metadata import PackageNotFoundError, version
 
-import yt_summary.cli.errors as errors
-from yt_summary.schemas.enums import SummarisationModesEnum
-
 
 class YTSummaryCLI:
     """Command line interface for the YouTube summary tool."""
@@ -22,16 +19,26 @@ class YTSummaryCLI:
         if not parsed_args.url:
             return "Please provide a YouTube video URL or ID."
 
-        from yt_summary.llm_config import llm_configs
-
-        llm_config = llm_configs[parsed_args.provider]
-
-        if not os.getenv(llm_config.key_name):
-            return f"{llm_config.key_name} environment variable not set."
-
-        print(f"Provider: {parsed_args.provider.upper()} | Model: {parsed_args.model or llm_config.default_model}")
-
         try:
+            if parsed_args.mode:
+                from yt_summary.cli.errors import check_mode_type
+
+                check_mode_type(parsed_args.mode)
+
+            if parsed_args.provider:
+                from yt_summary.cli.errors import check_provider_type
+
+                check_provider_type(parsed_args.provider)
+
+            from yt_summary.llm_config import llm_configs
+
+            llm_config = llm_configs[parsed_args.provider]
+
+            if not os.getenv(llm_config.key_name):
+                return f"{llm_config.key_name} environment variable not set."
+
+            print(f"Provider: {parsed_args.provider.upper()} | Model: {parsed_args.model or llm_config.default_model}")
+
             from yt_summary.extractors.transcript import TranscriptExtractor
             from yt_summary.run.getters import summarisers
             from yt_summary.schemas.models import LLMModel
@@ -63,7 +70,6 @@ class YTSummaryCLI:
             help=("The video ID or URL of the Youtube video to summarize. Use quotes if URL is passed."),
         )
 
-        # TODO: no metadata found error
         parser.add_argument(
             "--version",
             "-v",
@@ -75,7 +81,7 @@ class YTSummaryCLI:
         parser.add_argument(
             "--provider",
             "-p",
-            type=errors.provider_type,
+            type=str,
             default="openai",
             help="Language model provider to use. (default: openai)",
         )
@@ -88,7 +94,6 @@ class YTSummaryCLI:
 
         parser.add_argument(
             "--model",
-            "-m",
             type=str,
             default=None,
             help="Model name for the provider.",
@@ -96,7 +101,8 @@ class YTSummaryCLI:
 
         parser.add_argument(
             "--mode",
-            type=SummarisationModesEnum,
+            "-m",
+            type=str,
             default="simple",
             help="Summarization mode: `simple` or `refined` (default: simple).",
         )

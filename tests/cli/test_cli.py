@@ -21,10 +21,11 @@ def test_run_llm_provider(provider):
     assert args.provider in [e.value for e in LLMProvidersEnum]
 
 
-def test_run_llm_provider_invalid():
-    cli = YTSummaryCLI(["www.foo.com", "--provider", "invalid"])
-    with pytest.raises(SystemExit), pytest.raises(ValueError):
-        cli._parse_args()
+@pytest.mark.asyncio
+async def test_run_llm_provider_invalid():
+    value = "invalid"
+    cli = YTSummaryCLI(["www.foo.com", "--provider", value])
+    assert await cli.run() == f"Invalid value '{value}'. Must be one of: {[e.value for e in LLMProvidersEnum]}"
 
 
 @pytest.mark.parametrize("mode", [mode.value for mode in SummarisationModesEnum])
