@@ -1,6 +1,6 @@
 """Prompt templates for video summarization tasks."""
 
-TIMESTAMPED_SUMMARY_CHUCKED_PROMPT = """
+REFINED_SUMMARY_CHUCKED_PROMPT = """
     You are given a portion of a youtube transcript with timestamps
     labeled as [%H:%M:%S or %M:%S (timestamp in seconds)].
     Create a summary of the key points in this section with their corresponding timestamps.
@@ -13,7 +13,7 @@ TIMESTAMPED_SUMMARY_CHUCKED_PROMPT = """
     - Format each point as: [timestamp] Summary text
     - Focus on main topics, arguments, and examples
     - Be concise but comprehensive
-    - Only include the start timestamp for each key point in seconds
+    - Only include the start timestamp for each key point.
     - Ignore sponsor blocks
 
     Transcript section:
@@ -23,12 +23,14 @@ TIMESTAMPED_SUMMARY_CHUCKED_PROMPT = """
 """
 
 
-TIMESTAMPED_CONSOLIDATION_PROMPT = """
-    You are given multiple timestamped summaries from different sections of a video transcript which are overlaped.
+REFINED_CONSOLIDATION_PROMPT = """
+    You are given the metadata and multiple timestamped summaries from different sections
+    of a video transcript which are overlaped.
     Organize and consolidate these into a coherent, comprehensive summary.
 
     RULES:
-    - First give an overall summary of the transcript in one to two paragraphs.
+    - Give the Youtube metada at the top as a markdown list.
+    - Give an overall summary of the transcript.
     - Consolidate the timestamps and key points. If successive sections relate to the same key point,
         merge them into a single point with the earliest timestamp.
     - Remove any redundancy
@@ -42,7 +44,7 @@ TIMESTAMPED_CONSOLIDATION_PROMPT = """
     Section summaries:
         {combined_summary}
 
-    Here is the high level summary as well as the timestamped summary of key points:
+    Here is the metadaata, high level summary as well as the timestamped summary of key points:
     """
 
 
@@ -55,7 +57,7 @@ SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE = """
     There's no need prompt the user to ask questions, as this is a self-contained summary and Q&A.
 
     RULES:
-        - Give the Youtube metada at the top.
+        - Give the Youtube metada at the top as a markdown list.
         - The QA format should be:
             (optional) Timestamps:
                 - timestamp 1 - summary point 1

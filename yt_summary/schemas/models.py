@@ -1,7 +1,7 @@
 """Pydantic models."""
 
+from llama_index.core.llms.function_calling import FunctionCallingLLM
 from llama_index.embeddings.openai.base import BaseEmbedding
-from llama_index.llms.anthropic.base import FunctionCallingLLM
 from pydantic import BaseModel, HttpUrl
 
 from yt_summary.schemas.enums import LLMProvidersEnum

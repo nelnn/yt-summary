@@ -6,8 +6,8 @@ from youtube_transcript_api.proxies import ProxyConfig
 from yt_summary.extractors.transcript import TranscriptExtractor
 from yt_summary.schemas.enums import LLMProvidersEnum, SummarisationModesEnum
 from yt_summary.schemas.models import LLMModel
+from yt_summary.summarisers.refined_summariser import RefinedSummariser
 from yt_summary.summarisers.simple_summariser import SimpleSummariser
-from yt_summary.summarisers.timestamp_summariser import RefinedSummariser
 
 
 async def get_youtube_summary(
@@ -46,6 +46,14 @@ async def get_youtube_summary(
     match mode:
         case SummarisationModesEnum.SIMPLE:
             summariser = SimpleSummariser(llm=LLMModel(provider=LLMProvidersEnum(llm_provider), model=model_name))
-        case SummarisationModesEnum.REFINE:
+        case SummarisationModesEnum.REFINED:
             summariser = RefinedSummariser(llm=LLMModel(provider=LLMProvidersEnum(llm_provider), model=model_name))
     return await summariser.summarise(transcript)
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    url = "https://www.youtube.com/watch?v=923G1s8QNAM"
+    summary = asyncio.run(get_youtube_summary(url))
+    print(summary)

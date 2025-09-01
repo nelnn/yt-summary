@@ -6,7 +6,7 @@ from llama_index.core.node_parser import SentenceSplitter
 
 from yt_summary.schemas.models import YoutubeTranscriptRaw
 from yt_summary.summarisers.base_summariser import BaseSummariser
-from yt_summary.summarisers.templates import TIMESTAMPED_CONSOLIDATION_PROMPT, TIMESTAMPED_SUMMARY_CHUCKED_PROMPT
+from yt_summary.summarisers.templates import REFINED_CONSOLIDATION_PROMPT, REFINED_SUMMARY_CHUCKED_PROMPT
 
 
 class RefinedSummariser(BaseSummariser):
@@ -23,9 +23,12 @@ class RefinedSummariser(BaseSummariser):
 
         """
         chunks = SentenceSplitter(chunk_size=4096, chunk_overlap=200).split_text(transcript.text)
-        tasks = [self.model.llm.acomplete(TIMESTAMPED_SUMMARY_CHUCKED_PROMPT.format(chunk=chunk)) for chunk in chunks]
-        section_texts = "\n".join([s.text.strip() for s in await asyncio.gather(*tasks)])
+        tasks = [self.model.llm.acomplete(REFINED_SUMMARY_CHUCKED_PROMPT.format(chunk=chunk)) for chunk in chunks]
+        section_texts = (
+            f"{transcript.metadata.model_dump_json()} \n"
+            f"{'\n'.join([s.text.strip() for s in await asyncio.gather(*tasks)])}"
+        )
         final_response = await self.model.llm.acomplete(
-            TIMESTAMPED_CONSOLIDATION_PROMPT.format(combined_summary=section_texts)
+            REFINED_CONSOLIDATION_PROMPT.format(combined_summary=section_texts)
         )
         return final_response.text

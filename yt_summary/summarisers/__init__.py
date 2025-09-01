@@ -1,2 +1,2 @@
 from .simple_summariser import SimpleSummariser
-from .timestamp_summariser import RefinedSummariser
+from .refined_summariser import RefinedSummariser

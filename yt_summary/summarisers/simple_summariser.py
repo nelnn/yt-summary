@@ -37,7 +37,6 @@ class SimpleSummariser(BaseSummariser):
             llm=self.model.llm,
             transformations=[splitter],
             response_synthesizer=response_synthesizer,
-            show_progress=True,
             embed_model=self.model.embed_model,
         )
         return index.get_document_summary(transcript.metadata.video_id)

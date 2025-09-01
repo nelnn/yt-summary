@@ -52,10 +52,12 @@ class YTSummaryCLI:
                 provider=parsed_args.provider,
                 model=parsed_args.model or llm_config.default_model,
             )
+            print("Fetching transcript and metadata...")
             transcript_extractor = TranscriptExtractor()
             transcript = await transcript_extractor.fetch(parsed_args.url)
+            print("Generating summary...")
             summariser = summarisers[parsed_args.mode](llm=llm_model)
-            return await summariser.summarise(transcript)
+            return f"\n {await summariser.summarise(transcript)}"
 
         except Exception as e:
             return str(e)
@@ -67,12 +69,12 @@ class YTSummaryCLI:
             return "unknown"
 
     def _parse_args(self) -> argparse.Namespace:
-        parser = argparse.ArgumentParser(prog="yt-summary", description="Summarize a YouTube video's transcript.")
+        parser = argparse.ArgumentParser(prog="yt-summary", description="Youtube Summariser")
         parser.add_argument(
             "url",
             nargs="?",
             type=str,
-            help=("The video ID or URL of the Youtube video to summarize. Use quotes if URL is passed."),
+            help=("video ID or URL of the Youtube video to summarize"),
         )
 
         parser.add_argument(
@@ -80,7 +82,13 @@ class YTSummaryCLI:
             "-v",
             action="version",
             version=f"%(prog)s {self._get_version()}",
-            help="Show the version number and exit.",
+            help="show the version number and exit",
+        )
+
+        parser.add_argument(
+            "--list-providers",
+            action="store_true",
+            help="list all supported language model providers and exit",
         )
 
         parser.add_argument(
@@ -88,20 +96,14 @@ class YTSummaryCLI:
             "-p",
             type=str,
             default="openai",
-            help="Language model provider to use. (default: openai)",
-        )
-
-        parser.add_argument(
-            "--list-providers",
-            action="store_true",
-            help="List all supported language model providers.",
+            help="language model provider to use. (default: openai)",
         )
 
         parser.add_argument(
             "--model",
             type=str,
             default=None,
-            help="Model name for the provider.",
+            help="model name for the provider",
         )
 
         parser.add_argument(
@@ -109,7 +111,15 @@ class YTSummaryCLI:
             "-m",
             type=str,
             default="simple",
-            help="Summarization mode: `simple` or `refined` (default: simple).",
+            help=(
+                "summarization mode: `simple` or `refined` (default: simple). "
+                "`simple`: List metadata, high level summary and Q&A with timestamps. "
+                "It utilises the `DocumentSummaryIndex` from LLamaIndex. "
+                "`refined`: List metadata, high level summary and a detailed, timestamped summary of key points. "
+                "It chunks the transcript (chunk_size=4096) and generates summaries for each chunk before"
+                "consolidating them by making multiple calls to the LLM asynchronously. "
+                "Be aware of the rate limits of your chosen LLM provider."
+            ),
         )
 
         if len(sys.argv) == 1:

@@ -22,4 +22,4 @@ class SummarisationModesEnum(StrEnum):
     """
 
     SIMPLE = "simple"
-    REFINE = "refine"
+    REFINED = "refined"
