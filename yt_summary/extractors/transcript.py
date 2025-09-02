@@ -25,7 +25,12 @@ class TranscriptExtractor:
         self.ytt_api = YouTubeTranscriptApi(proxy_config=proxy_config, http_client=http_client)
 
     async def fetch(
-        self, url: str, languages: Iterable[str] | None = None, *, preserve_formatting: bool = False
+        self,
+        url: str,
+        languages: Iterable[str] | None = None,
+        sentences_per_timestamp_group: int = 10,
+        *,
+        preserve_formatting: bool = False,
     ) -> YoutubeTranscriptRaw:
         """Asynchronously fetch transcript.
 
@@ -35,6 +40,8 @@ class TranscriptExtractor:
                 example, if this is set to ["de", "en"] it will first try to fetch the
                 german transcript (de) and then fetch the english transcript (en) if
                 it fails to do so. This defaults to ["en"].
+            sentences_per_timestamp_group: number of sentences to stitch together. To
+                improve granularity, reduce this number.
             preserve_formatting: whether to keep select HTML text formatting
 
         Returns:
@@ -49,7 +56,7 @@ class TranscriptExtractor:
             ),
             extract_metadata(url),
         )
-        text = self._stitch_snippets(fetched_transcript.snippets)
+        text = self._stitch_snippets(fetched_transcript.snippets, sentences_per_timestamp_group)
         metadata.is_generated = fetched_transcript.is_generated
         metadata.language = fetched_transcript.language
         metadata.language_code = fetched_transcript.language_code

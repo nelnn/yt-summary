@@ -5,16 +5,13 @@ REFINED_SUMMARY_CHUCKED_PROMPT = """
     The timestamps are placed in the begining of sentences in the
     format [%H:%M:%S or %M:%S (timestamp in seconds)].
 
-    Create a summary of the key points in this section with their corresponding timestamps.
-    Since each timestamp represents a less than or equal to one coherent sentence,
-    you should group multiple timestamps together if they relate to the same key point,
-    and use the earliest timestamp for that point.
+    Create a very detailed summary of the key points in this section with their corresponding timestamps.
 
     FORMATTING RULES:
     - Extract timestamps from [timestamp] markers
     - Format each point as: [timestamp] Summary text
     - Focus on main topics, arguments, and examples
-    - Be concise but comprehensive
+    - Be comprehensive
     - Only include the start timestamp for each key point.
     - Ignore sponsor blocks
 
@@ -55,11 +52,11 @@ SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE = """
     Given the following document, give the metadata of the video such as title and author and
     generate a concise, high-level summary.
     After the summary, generate a list of insightful questions that this document can answer,
-    and provide brief, accurate answers to each.
+    and provide detailed and accurate answers to each.
     There's no need prompt the user to ask questions, as this is a self-contained summary and Q&A.
 
     RULES:
-        - Give the Youtube metada at the top as a markdown list.
+        - Give the Youtube metada at the top as a **list**.
         - The timestamps are placed in the begining of sentences in the
             format [%H:%M:%S or %M:%S (timestamp in seconds)].
         - Give key points of the video with the corresponding timestamp(s)

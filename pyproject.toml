@@ -1,21 +1,31 @@
+[build-system]
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"
+
 [project]
 name = "yt-summary"
-version = "0.1.0"
-description = "Youtube Summariser"
-readme = "README.md"
-requires-python = ">=3.13"
+# version = "0.1.0"
+# test version
+version = "0.1.6"
 dependencies = [
     "aiohttp>=3.12.15",
     "llama-index>=0.13.2",
-    "llama-index-embeddings-google-genai>=0.3.0",
-    "llama-index-llms-anthropic>=0.8.5",
-    "llama-index-llms-google-genai>=0.3.0",
-    "llama-index-vector-stores-postgres>=0.6.3",
     "pydantic>=2.11.7",
     "pydantic-settings>=2.10.1",
     "types-requests>=2.32.4.20250809",
     "youtube-transcript-api>=1.2.2",
 ]
+requires-python = ">=3.13"
+authors = [
+  {name = "Nelson Ngai", email = "nelsonn.xyz@gmail.com"}
+]
+description = "Youtube Summariser with LlamaIndex"
+readme = "README.md"
+license = "MIT"
+keywords = ["youtube", "summary", "llamaindex", "genai"]
+
+[project.urls]
+Repository = "https://github.com/nelnn/yt-summary"
 
 [dependency-groups]
 dev = [
@@ -25,6 +35,27 @@ dev = [
     "pytest-cov>=6.2.1",
     "ruff>=0.12.9",
     "ty>=0.0.1a19",
+]
+
+[tool.uv.build-backend]
+module-name = "yt_summary"
+module-root = ""
+
+[project.scripts]
+yt-summary = "yt_summary.__main__:main"
+
+[project.optional-dependencies]
+google = [
+    "llama-index-embeddings-google-genai>=0.3.0",
+    "llama-index-llms-google-genai>=0.3.0",
+]
+anthropic = [
+    "llama-index-llms-anthropic>=0.8.5",
+]
+all = [
+    "llama-index-embeddings-google-genai>=0.3.0",
+    "llama-index-llms-google-genai>=0.3.0",
+    "llama-index-llms-anthropic>=0.8.5",
 ]
 
 [tool.ruff.format]
@@ -72,16 +103,14 @@ lint.ignore = [
 [tool.ruff.lint.per-file-ignores]
 "yt_summary/api/**.py" = ["B008"]
 "tests/**.py" = ["D", "S", "ANN"]
-"yt_summary/cli/**.py" = ["T201"]
+"yt_summary/cli/**.py" = ["T201", "BLE001"]
 "yt_summary/__main__.py" = ["T201"]
 
 [tool.pytest.ini_options]
 # https://docs.pytest.org/en/6.2.x/customize.html#pyproject-toml
-# Directories that are not visited by pytest collector:
 norecursedirs = ["hooks", "*.egg", ".eggs", "dist", "build", "docs", ".tox", ".git", "__pycache__"]
 doctest_optionflags = ["NUMBER", "NORMALIZE_WHITESPACE", "IGNORE_EXCEPTION_DETAIL"]
 
-# Extra options:
 addopts = [
     "--strict-markers",
     "--tb=short",
