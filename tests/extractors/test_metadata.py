@@ -8,9 +8,9 @@ from yt_summary.schemas.exceptions import MetadataNotFoundException
 from yt_summary.schemas.models import YoutubeMetadata
 
 
+@pytest.mark.parametrize("url", ["dQw4w9W", "https://www.youtube.com/watch?v=v123", "https://youtu.be/v123"])
 @pytest.mark.asyncio
-async def test_extract_metadata(fake_youtube_metadata_json):
-    url = "https://www.youtube.com/watch?v=dQw4w9W"
+async def test_extract_metadata(url, fake_youtube_metadata_json):
 
     mock_response = AsyncMock()
     mock_response.__aenter__.return_value = mock_response

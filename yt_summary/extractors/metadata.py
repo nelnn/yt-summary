@@ -20,7 +20,7 @@ async def extract_metadata(url: str) -> YoutubeMetadata:
         MetadataNotFoundError: If there is an error fetching the metadata.
 
     """
-    if "youtube.com" not in url:
+    if "youtube.com" not in url and "youtu.be" not in url:
         url = f"https://www.youtube.com/watch?v={url}"
 
     try:

@@ -10,7 +10,7 @@ from youtube_transcript_api.proxies import ProxyConfig
 from yt_summary.extractors.metadata import extract_metadata
 from yt_summary.schemas.models import YoutubeTranscriptRaw
 from yt_summary.utils.async_helpers import to_async
-from yt_summary.utils.misc import convert_to_readable_time
+from yt_summary.utils.misc import convert_to_readable_time, parse_youtube_video_id
 
 
 class TranscriptExtractor:
@@ -75,7 +75,7 @@ class TranscriptExtractor:
             The transcript text.
 
         """
-        video_id = url.split("?v=")[-1].split("&")[0]
+        video_id = parse_youtube_video_id(url)
         return self.ytt_api.fetch(
             video_id,
             languages=languages if languages else ["en"],

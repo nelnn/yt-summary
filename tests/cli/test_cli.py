@@ -53,7 +53,7 @@ async def test_run_cli_get_summary_success(mock_transcript, mock_summariser):
         patch("yt_summary.run.getters.summarisers", {"simple": mock_summariser_factory}),
     ):
         result = await cli.run()
-        assert result == "This is a summary."
+        assert result == "\n This is a summary."
 
 
 @pytest.mark.asyncio

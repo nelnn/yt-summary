@@ -1,8 +1,10 @@
 """Prompt templates for video summarization tasks."""
 
 REFINED_SUMMARY_CHUCKED_PROMPT = """
-    You are given a portion of a youtube transcript with timestamps
-    labeled as [%H:%M:%S or %M:%S (timestamp in seconds)].
+    You are given a portion of a youtube transcript with timestamps.
+    The timestamps are placed in the begining of sentences in the
+    format [%H:%M:%S or %M:%S (timestamp in seconds)].
+
     Create a summary of the key points in this section with their corresponding timestamps.
     Since each timestamp represents a less than or equal to one coherent sentence,
     you should group multiple timestamps together if they relate to the same key point,
@@ -58,12 +60,14 @@ SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE = """
 
     RULES:
         - Give the Youtube metada at the top as a markdown list.
+        - The timestamps are placed in the begining of sentences in the
+            format [%H:%M:%S or %M:%S (timestamp in seconds)].
+        - Give key points of the video with the corresponding timestamp(s)
+            in the next section as a list.
         - The QA format should be:
-            (optional) Timestamps:
-                - timestamp 1 - summary point 1
-                - timestamp 2 - summary point 2
             Q: Question? [timestamp1, timestamp2, ...]
             A: Answer.
+        - Maintain chronological order or ignore it if it improves clarity.
         - Ignore Sponsor segments.
 
     Document:\n{context_str}\n\n
