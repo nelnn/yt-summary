@@ -49,12 +49,3 @@ async def get_youtube_summary(
         case SummarisationModesEnum.REFINED:
             summariser = RefinedSummariser(llm=LLMModel(provider=LLMProvidersEnum(llm_provider), model=model_name))
     return await summariser.summarise(transcript)
-
-
-if __name__ == "__main__":
-    import asyncio
-
-    url = "https://www.youtube.com/watch?v=923G1s8QNAM"
-    url = "https://youtu.be/ybWUK1dGRm8?si=BZzQxwIm2WmDVnpw"
-    summary = asyncio.run(get_youtube_summary(url))
-    print(summary)

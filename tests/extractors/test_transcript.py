@@ -1,7 +1,6 @@
 from unittest import mock
 
 import pytest
-from youtube_transcript_api import FetchedTranscriptSnippet
 
 from yt_summary.extractors.transcript import TranscriptExtractor
 
