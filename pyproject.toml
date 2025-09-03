@@ -3,10 +3,8 @@ requires = ["uv_build>=0.8.14,<0.9.0"]
 build-backend = "uv_build"
 
 [project]
-name = "yt-summary"
-# version = "0.1.0"
-# test version
-version = "0.1.6"
+name = "yt-pls"
+version = "0.0.1"
 dependencies = [
     "aiohttp>=3.12.15",
     "llama-index>=0.13.2",
@@ -25,7 +23,7 @@ license = "MIT"
 keywords = ["youtube", "summary", "llamaindex", "genai"]
 
 [project.urls]
-Repository = "https://github.com/nelnn/yt-summary"
+Repository = "https://github.com/nelnn/yt-pls"
 
 [dependency-groups]
 dev = [
@@ -42,7 +40,7 @@ module-name = "yt_summary"
 module-root = ""
 
 [project.scripts]
-yt-summary = "yt_summary.__main__:main"
+yt-pls = "yt_summary.__main__:main"
 
 [project.optional-dependencies]
 google = [

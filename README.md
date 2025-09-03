@@ -1,14 +1,11 @@
-
-
-
 <h1 align="center">yt-summary</h1>
 
 <p align="center">
-    <a href="https://github.com/astral-sh/ty">
-        <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json">
-    </a>
     <a href="https://www.python.org/downloads/release/python-3131/">
         <img src="https://img.shields.io/badge/python-3.13-blue.svg" alt="Python 3.13">
+    </a>
+    <a href="https://github.com/astral-sh/ty">
+        <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json">
     </a>
     <a href="https://github.com/astral-sh/ruff">
         <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Linting: Ruff">
@@ -22,18 +19,45 @@
 A tool to generate YouTube video summaries with LlmaIndex
 </p>
 
+> The project was named `yt-summary` initially but PyPI rejected it for being too
+> similar to an existing project. Hence it's renamed to `yt-pls` for the
+> CLI tool (YouTube please)
+
 ## Install
+
+### pip
+
 ```bash
-pip install yt-summary
+pip install yt-pls
 ```
 
 If you want to use the Gemini and/or Claude models, you need to install the optional dependencies:
 ```bash
-pip install yt-summary[google]
-pip install yt-summary[anthropic]
+pip install yt-pls[google]
+pip install yt-pls[anthropic]
 
-# or simply
-pip install yt-summary[all]
+# or
+pip install yt-pls[all]
+```
+
+### Global
+You can install the package globally with `pipx` or `uvx`:
+```bash
+pipx install yt-pls
+```
+
+```bash
+uvx run yt-pls
+```
+
+### Development
+Install [uv](https://github.com/astral-sh/uv) and run:
+```bash
+```bash
+git clone https://github.com/nelnn/yt-summary.git
+cd yt-summary
+make install
+source .venv/bin/activate
 ```
 
 ## CLI
@@ -46,22 +70,22 @@ export ANTHROPIC_API_KEY="..."
 
 Then execute
 ```bash
-yt-summary [url]
+yt-pls [url/video_id]
 ```
 
 You can specify the LLM provider and model:
 ```bash
-yt-summary --provider openai --model gpt-5-mini-2025-08-07 [url]
+yt-pls --provider openai --model gpt-5-mini-2025-08-07 [url/video_id]
 ```
 
 You can also specify the summariser type:
 ```bash
-yt-summary --summariser refined [url]
+yt-pls --summariser refined [url/video_id]
 ```
 
 To save the output to a file, for example in markdown:
 ```bash
-yt-summary [url] > summary.md
+yt-pls [url/video_id] > summary.md
 ```
 
 ## API
@@ -73,7 +97,8 @@ summary = await get_youtube_summary("https://www.youtube.com/watch?v=abc123")
 ```
 
 Remember to export your LLM API key as an environment variable before running
-the function. Alternatively, you can save them in a `.env` file in the root directory.
+the function. Alternatively, you can save them in a `.env` file in your project
+root directory.
 
 
 ### Transcript Extractor
@@ -98,7 +123,7 @@ YoutubeTranscriptRaw(
         channel_url="https://www.youtube.com/channel/channel123",
         thumbnail_url="https://i.ytimg.com/vi/abc123/hqdefault.jpg",
         is_generated=True,
-        language="English (Auto)",
+        language="English (auto-generated)",
         language_code="en",
     ),
     text="[00:00 (0s)] First sentence. Second sentence. [00:10 (10s)] Third sentence...",
@@ -113,27 +138,26 @@ YoutubeTranscriptRaw(
 > `YouTubeTranscriptApi`.
 
 ### Summariser
-There are currently two summariser implementations: `SimpleSummariser` and
+There are currently two summariser implementations: `CompactSummariser` and
 `RefineSummariser`.
 
-`SimpleSummariser` lists metadata, high level summary and
+`CompactSummariser` lists metadata, high level summary and
 Q&A with timestamps. It utilises the `DocumentSummaryIndex` from LLamaIndex.
 
-`RefineSummariser` also lists metadata, high level summary and a detailed,
-timestamped summary of key points. It chunks the transcript (chunk_size=4096)
-and generates summaries for each chunk before consolidating them by making
-multiple calls to the LLM asynchronously. Be aware of the rate limits of your
-chosen LLM provider.
+`RefineSummariser` achieves the same by chunking the transcript to generate
+summaries for each chunk before consolidating them by making multiple calls to
+the LLM asynchronously. Be aware of the rate limits of your chosen LLM
+provider.
 
-For example, to generate summary with `SimpleSummariser`:
+For example, to generate summary with `CompactSummariser`:
 ```python
 from yt_summary.extractors import TranscriptExtractor
 from yt_summary.schemas import LLMModel, LLMProvidersEnum
-from yt_summary.summarisers import SimpleSummariser, RefinedSummariser
+from yt_summary.summarisers import CompactSummariser, RefinedSummariser
 
 transcript_extractor = TranscriptExtractor()
 transcript_raw = await transcript_extractor.fetch(url)
-summariser = SimpleSummariser(
+summariser = CompactSummariser(
     llm=LLMModel(
         provider=LLMProvidersEnum.OPENAI,
         model="gpt-5-mini-2025-08-07",
@@ -141,3 +165,6 @@ summariser = SimpleSummariser(
 )
 summary = await summariser.summarise(transcript)
 ```
+
+> The repository is under development, expect breaking changes.
+> Sugguestions and contributions are welcome!
