@@ -53,7 +53,6 @@ uvx run yt-pls
 ### Development
 Install [uv](https://github.com/astral-sh/uv) and run:
 ```bash
-```bash
 git clone https://github.com/nelnn/yt-summary.git
 cd yt-summary
 make install
