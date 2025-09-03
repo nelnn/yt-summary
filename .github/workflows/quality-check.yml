@@ -1,0 +1,20 @@
+name: Code Quality
+
+on:
+  push:
+
+concurrency:
+  group: quality-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Check changed Repos
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Python
+        if: always()
+        uses: ./.github/actions/check-python
+        with:
+          working-directory: '.'

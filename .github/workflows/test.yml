@@ -1,0 +1,23 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+
+concurrency:
+  group: test-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test yt-summary
+        if: always()
+        uses: ./.github/actions/test-python
+        with:
+          path: 'tests/'
+          pkg-name: 'yt_summary'

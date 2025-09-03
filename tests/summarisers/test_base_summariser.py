@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
 from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -24,7 +26,11 @@ class MockBaseSummariser(BaseSummariser):
         (LLMProvidersEnum.ANTHROPIC, Anthropic, OpenAIEmbedding),
     ],
 )
-def test_get_model(provider, model_class, embed_class):
+@patch("google.genai.Client")
+def test_get_model(mock_google_client, provider, model_class, embed_class):
+    # The mock is not needed but the CI fails without it for some reason
+    mock_google_client.return_value = MagicMock()
+
     llm = LLMModel(provider=provider, model=llm_configs[provider].default_model)
     summariser = MockBaseSummariser(llm)
     assert isinstance(summariser.model.llm, model_class)

@@ -1,0 +1,22 @@
+name: 'Test'
+description: 'Test Python'
+inputs:
+  path:
+    description: 'Path to point to for pytest'
+    required: false
+    default: '.'
+  pkg-name:
+    description: 'The name of the package (for coverage)'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v4
+    - name: Build Python
+      uses: ./.github/actions/builder
+
+    - name: Test Python
+      shell: bash
+      run: uv run pytest --cov=${{ inputs.pkg-name }} ${{ inputs.path }}
+      if: ${{ always() }}

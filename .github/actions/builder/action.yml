@@ -1,0 +1,29 @@
+name: Build uv
+
+description: 'Build uv'
+
+inputs:
+  working-directory:
+    description: 'working directory for the Python package'
+    required: true
+
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v4
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "0.5.21"
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version-file: "pyproject.toml"
+
+    - name: Install the project
+      run: uv sync --verbose --all-extras --dev
+      shell: bash
