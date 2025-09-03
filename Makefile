@@ -12,5 +12,5 @@ lint:
 	uv run ty check
 
 lint-test:
-	uv run ruff check tests/
+	uv run ruff check tests/ --fix
 	uv run ruff format tests/
