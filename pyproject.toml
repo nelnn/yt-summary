@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "yt-pls"
-version = "0.0.1"
+version = "0.0.1-beta-1"
 dependencies = [
     "aiohttp>=3.12.15",
     "llama-index>=0.13.2",
