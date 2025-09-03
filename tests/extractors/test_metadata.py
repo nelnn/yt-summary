@@ -11,7 +11,6 @@ from yt_summary.schemas.models import YoutubeMetadata
 @pytest.mark.parametrize("url", ["dQw4w9W", "https://www.youtube.com/watch?v=v123", "https://youtu.be/v123"])
 @pytest.mark.asyncio
 async def test_extract_metadata(url, fake_youtube_metadata_json):
-
     mock_response = AsyncMock()
     mock_response.__aenter__.return_value = mock_response
     mock_response.json.return_value = fake_youtube_metadata_json
