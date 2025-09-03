@@ -5,7 +5,8 @@ REFINED_SUMMARY_CHUCKED_PROMPT = """
     The timestamps are placed in the begining of sentences in the
     format [%H:%M:%S or %M:%S (timestamp in seconds)].
 
-    Create a very detailed summary of the key points in this section with their corresponding timestamps.
+    Create a very detailed and comphrensive summary of the topics in this section with their corresponding timestamps.
+    Keep the examples and analogies if any.
 
     FORMATTING RULES:
     - Extract timestamps from [timestamp] markers
@@ -28,26 +29,61 @@ REFINED_CONSOLIDATION_PROMPT = """
     Organize and consolidate these into a coherent, comprehensive summary.
 
     RULES:
-    - Give the Youtube metada at the top as a markdown list.
-    - Give an overall summary of the transcript.
-    - Consolidate the timestamps and key points. If successive sections relate to the same key point,
-        merge them into a single point with the earliest timestamp.
-    - Remove any redundancy
-    - Maintain chronological order
-    - Format as: [timestamp] Summary text
-    - You can group the key points under thematic headings if it improves clarity.
-    - You can ignore the chronological order if it improves clarity. For example, if a topic is discussed at
-        multiple points in the transcript, you can group those points together. and provide the timestamps in
-        the format [timestamp1, timestamp2, ...] Summary text
+    1. Format the output as marked down with headers and bullet points.
+    2. Give the Youtube metada at the top as a **list**, including: title, author, channel id, url, channel url,
+        thumbnail url, language.
+    3. Give an overall summary of the transcript.
+    4. Breakdown into sections and subsections with bullet points for topics. Each bullet point
+        should be a summary of a broad topic instead of an one-liner.
+    5. Omit adjacent timestamps that refer to the same topic.
+    6. Remove any redundancy
+    7. Maintain chronological order
+    8. Provide a Q&A section at the end with insightful questions and their answers based on the transcript.
+    9. Add line breaks immediately after headers and subheaders.
+
+    OUTPUT STRUCTURE:
+
+    # Author: Video Title
+    ## Metadata
+        - title
+        - author
+        - channel id
+        - url
+        - channel url
+        - thumbnail url
+        - language
+
+    ## Summary
+
+    ## Sections
+    ### Subsection 1
+        - [timestamp 1] topic 1 for Header 1
+        - [timestamp 2] topic 2 for Header 1
+        - etc.
+    ### Subsection 2
+        - [timestamp 3] topic 1 for Header 2
+        - etc.
+    - etc.
+
+    ## Q&A
+    ### Question 1
+        Your Ansewer
+    ### Question 2
+        Your Ansewer
+    etc.
 
     Section summaries:
         {combined_summary}
 
     Here is the metadaata, high level summary as well as the timestamped summary of key points:
+
+    ... Your Reponse ...
+
+    END CONVERSATION.
     """
 
 
-SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE = """
+COMPACT_SUMMARY_QA_PROMPT_TEMPLATE = """
     You are an expert summarizer and question answerer.
     Given the following document, give the metadata of the video such as title and author and
     generate a concise, high-level summary.
@@ -56,20 +92,65 @@ SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE = """
     There's no need prompt the user to ask questions, as this is a self-contained summary and Q&A.
 
     RULES:
-        - Give the Youtube metada at the top as a **list**.
-        - The timestamps are placed in the begining of sentences in the
-            format [%H:%M:%S or %M:%S (timestamp in seconds)].
-        - Give key points of the video with the corresponding timestamp(s)
-            in the next section as a list.
-        - The QA format should be:
-            Q: Question? [timestamp1, timestamp2, ...]
-            A: Answer.
-        - Maintain chronological order or ignore it if it improves clarity.
-        - Ignore Sponsor segments.
+    1. Format the output as marked down with headers and bullet points.
+    2. Give the Youtube metada at the top as a **list**, including: title, author, channel id, url, channel url,
+        thumbnail url, language.
+    3. Give an overall summary of the transcript.
+    4. Breakdown into sections and subsections with bullet points for topics. Each bullet point
+        should be a summary of a broad topic instead of an one-liner.
+    5. Omit adjacent timestamps that refer to the same broad topic.
+    6. Remove any redundancy
+    7. Maintain chronological order
+    8. Provide a Q&A section at the end with insightful questions and their answers based on the transcript.
+    9. Add line breaks immediately after headers and subheaders.
 
-    Document:\n{context_str}\n\n
+    OUTPUT STRUCTURE:
 
-    Here is the video information and the summary with Q&A:\n
+        # Author: Video Title
+
+        ## Metadata
+
+            - title
+            - author
+            - channel id
+            - url
+            - channel url
+            - thumbnail url
+            - language
+
+        ## Summary
+
+        High level summary. If the transcript is long, make the summary more comprehensive.
+
+
+        ## Sections
+
+        ### Subsection 1
+
+            - [timestamp 1] Broad topic 1 for Header 1
+            - [timestamp 2] Broad topic 2 for Header 1
+            - etc.
+        ### Subsection 2
+
+            - [timestamp 3] Broad topic 1 for Header 2
+            - etc.
+        - etc.
+
+        ## Q&A
+
+        ### e.g. What is ...?
+
+            Your Ansewer
+        ### e.g. Why does ...?
+
+            Your Ansewer
+        etc.
+
+
+    Document:
+        {context_str}
+
+    Here is the metadaata, high level summary as well as the timestamped summary of key points:
 
     ... Your Reponse ...
 

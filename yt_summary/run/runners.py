@@ -14,7 +14,7 @@ async def get_youtube_summary(
     url: str,
     llm_provider: LLMProvidersEnum = LLMProvidersEnum.OPENAI,
     model_name: str = "gpt-5-mini-2025-08-07",
-    mode: SummarisationModesEnum = SummarisationModesEnum.SIMPLE,
+    mode: SummarisationModesEnum = SummarisationModesEnum.COMPACT,
     languages: list[str] | None = None,
     *,
     preserve_formatting: bool = False,
@@ -44,7 +44,7 @@ async def get_youtube_summary(
         url, languages=languages if languages else ["en"], preserve_formatting=preserve_formatting
     )
     match mode:
-        case SummarisationModesEnum.SIMPLE:
+        case SummarisationModesEnum.COMPACT:
             summariser = SimpleSummariser(llm=LLMModel(provider=LLMProvidersEnum(llm_provider), model=model_name))
         case SummarisationModesEnum.REFINED:
             summariser = RefinedSummariser(llm=LLMModel(provider=LLMProvidersEnum(llm_provider), model=model_name))
@@ -55,5 +55,6 @@ if __name__ == "__main__":
     import asyncio
 
     url = "https://www.youtube.com/watch?v=923G1s8QNAM"
+    url = "https://youtu.be/ybWUK1dGRm8?si=BZzQxwIm2WmDVnpw"
     summary = asyncio.run(get_youtube_summary(url))
     print(summary)

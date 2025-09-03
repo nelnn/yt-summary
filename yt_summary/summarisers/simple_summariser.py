@@ -6,7 +6,7 @@ from llama_index.core.response_synthesizers.type import ResponseMode
 
 from yt_summary.schemas.models import YoutubeTranscriptRaw
 from yt_summary.summarisers.base_summariser import BaseSummariser
-from yt_summary.summarisers.templates import SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE
+from yt_summary.summarisers.templates import COMPACT_SUMMARY_QA_PROMPT_TEMPLATE
 
 
 class SimpleSummariser(BaseSummariser):
@@ -28,7 +28,7 @@ class SimpleSummariser(BaseSummariser):
         splitter = SentenceSplitter(chunk_size=2048, chunk_overlap=200)
         response_synthesizer = get_response_synthesizer(
             llm=self.model.llm,
-            text_qa_template=PromptTemplate(SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE),
+            text_qa_template=PromptTemplate(COMPACT_SUMMARY_QA_PROMPT_TEMPLATE),
             response_mode=ResponseMode.COMPACT,
             use_async=True,
         )

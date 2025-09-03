@@ -42,8 +42,6 @@ class YTSummaryCLI:
             if not os.getenv(llm_config.key_name):
                 return f"{llm_config.key_name} environment variable not set."
 
-            print(f"Provider: {parsed_args.provider.upper()} | Model: {parsed_args.model or llm_config.default_model}")
-
             from yt_summary.extractors.transcript import TranscriptExtractor
             from yt_summary.run.getters import summarisers
             from yt_summary.schemas.models import LLMModel
@@ -52,10 +50,8 @@ class YTSummaryCLI:
                 provider=parsed_args.provider,
                 model=parsed_args.model or llm_config.default_model,
             )
-            print("Fetching transcript and metadata...")
             transcript_extractor = TranscriptExtractor()
             transcript = await transcript_extractor.fetch(parsed_args.url)
-            print("Generating summary...")
             summariser = summarisers[parsed_args.mode](llm=llm_model)
             return f"\n {await summariser.summarise(transcript)}"
 
@@ -110,10 +106,10 @@ class YTSummaryCLI:
             "--mode",
             "-m",
             type=str,
-            default="simple",
+            default="compact",
             help=(
-                "summarization mode: `simple` or `refined` (default: simple). "
-                "`simple`: List metadata, high level summary and Q&A with timestamps. "
+                "summarization mode: `compact` or `refined` (default: compact). "
+                "`compact`: List metadata, high level summary and Q&A with timestamps. "
                 "It utilises the `DocumentSummaryIndex` from LLamaIndex. "
                 "`refined`: List metadata, high level summary and a detailed, timestamped summary of key points. "
                 "It chunks the transcript (chunk_size=4096) and generates summaries for each chunk before"

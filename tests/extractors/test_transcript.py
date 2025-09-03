@@ -11,15 +11,6 @@ def url():
     return "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 
-@pytest.fixture
-def snippets():
-    return [
-        FetchedTranscriptSnippet(text="This is", start=0.0, duration=5.0),
-        FetchedTranscriptSnippet(text="a test. Snippet", start=5.0, duration=5),
-        FetchedTranscriptSnippet(text="three!", start=10.0, duration=5.0),
-    ]
-
-
 @pytest.fixture(autouse=True)
 def patch_fetch_transcript(monkeypatch, fake_fetched_transcript):
     def mock_fetch_transcript(url, languages=None, *, preserve_formatting=False):
@@ -53,9 +44,3 @@ class TestTranscriptExtractor:
         with mock.patch.object(self.extractor, "fetch", return_value=fake_youtube_transcript_raw):
             result = await self.extractor.fetch(url, languages=["en", "de"])
             assert result == fake_youtube_transcript_raw
-
-
-def test__stitch_snippets(snippets):
-    extractor = TranscriptExtractor()
-    text = extractor._stitch_snippets(snippets, sentences_per_timestamp_group=1)
-    assert text == "[00:00 (0s)] This is a test. [00:05 (5s)] Snippet three!"

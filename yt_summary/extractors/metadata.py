@@ -5,6 +5,7 @@ from pydantic import HttpUrl
 
 from yt_summary.schemas.exceptions import MetadataNotFoundException
 from yt_summary.schemas.models import YoutubeMetadata
+from yt_summary.utils.misc import parse_youtube_video_id
 
 
 async def extract_metadata(url: str) -> YoutubeMetadata:
@@ -35,7 +36,7 @@ async def extract_metadata(url: str) -> YoutubeMetadata:
         raise MetadataNotFoundException(e) from e
 
     return YoutubeMetadata(
-        video_id=url.split("?v=")[-1].split("&")[0],
+        video_id=parse_youtube_video_id(url),
         title=metadata["title"],
         author=metadata["author_name"],
         channel_id=metadata["author_url"].split("@")[-1],

@@ -50,7 +50,7 @@ async def test_run_cli_get_summary_success(mock_transcript, mock_summariser):
     with (
         patch.dict(os.environ, {"OPENAI_API_KEY": "testkey"}),
         patch("yt_summary.extractors.transcript.TranscriptExtractor", return_value=mock_transcript),
-        patch("yt_summary.run.getters.summarisers", {"simple": mock_summariser_factory}),
+        patch("yt_summary.run.getters.summarisers", {"compact": mock_summariser_factory}),
     ):
         result = await cli.run()
         assert result == "\n This is a summary."

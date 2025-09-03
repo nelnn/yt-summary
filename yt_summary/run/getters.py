@@ -6,6 +6,6 @@ from yt_summary.summarisers.refined_summariser import RefinedSummariser
 from yt_summary.summarisers.simple_summariser import SimpleSummariser
 
 summarisers: dict[SummarisationModesEnum, type[BaseSummariser]] = {
-    SummarisationModesEnum.SIMPLE: SimpleSummariser,
+    SummarisationModesEnum.COMPACT: SimpleSummariser,
     SummarisationModesEnum.REFINED: RefinedSummariser,
 }

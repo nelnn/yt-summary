@@ -4,7 +4,7 @@ import asyncio
 from typing import Iterable
 
 from requests import Session
-from youtube_transcript_api import FetchedTranscript, FetchedTranscriptSnippet, YouTubeTranscriptApi
+from youtube_transcript_api import FetchedTranscript, YouTubeTranscriptApi
 from youtube_transcript_api.proxies import ProxyConfig
 
 from yt_summary.extractors.metadata import extract_metadata
@@ -25,12 +25,7 @@ class TranscriptExtractor:
         self.ytt_api = YouTubeTranscriptApi(proxy_config=proxy_config, http_client=http_client)
 
     async def fetch(
-        self,
-        url: str,
-        languages: Iterable[str] | None = None,
-        sentences_per_timestamp_group: int = 10,
-        *,
-        preserve_formatting: bool = False,
+        self, url: str, languages: Iterable[str] | None = None, *, preserve_formatting: bool = False
     ) -> YoutubeTranscriptRaw:
         """Asynchronously fetch transcript.
 
@@ -56,7 +51,7 @@ class TranscriptExtractor:
             ),
             extract_metadata(url),
         )
-        text = self._stitch_snippets(fetched_transcript.snippets, sentences_per_timestamp_group)
+        text = " ".join([f"[{convert_to_readable_time(int(s.start))}] {s.text}" for s in fetched_transcript.snippets])
         metadata.is_generated = fetched_transcript.is_generated
         metadata.language = fetched_transcript.language
         metadata.language_code = fetched_transcript.language_code
@@ -112,44 +107,3 @@ class TranscriptExtractor:
             "preserve_formatting": preserve_formatting,
         }
         return await to_async(self.fetch_transcript, **kwargs)
-
-    @staticmethod
-    def _stitch_snippets(snippets: list[FetchedTranscriptSnippet], sentences_per_timestamp_group: int = 20) -> str:
-        """Stitch snippets together and get the earliest timestamp.
-
-        Args:
-            snippets: list of transcript snippets
-            sentences_per_timestamp_group: number of sentences to stitch together.
-
-        Returns:
-            stitched transcript.
-
-        """
-        text = []
-        buffer = []
-        start_time = None
-        sentence_count = 0
-
-        for i in range(len(snippets)):
-            buffer.append(snippets[i].text)
-
-            if start_time is None:
-                start_time = int(snippets[i].start)
-
-            if "." in snippets[i].text:
-                sentence_count += 1
-
-            if sentence_count == sentences_per_timestamp_group:
-                stitched_text = " ".join(buffer)
-                pos = stitched_text.rfind(".")
-                text.append(f"[{convert_to_readable_time(start_time)} ({start_time}s)] {stitched_text[: pos + 1]} ")
-                buffer = [stitched_text[pos + 1 :].strip()]
-                sentence_count = 0
-                start_time = None
-            if i == len(snippets) - 1:
-                text.append(
-                    f"[{convert_to_readable_time(int(snippets[i - 1].start))} "
-                    f"({int(snippets[i - 1].start)}s)] "
-                    f"{' '.join(buffer)}"
-                )
-        return "".join(text).strip()
