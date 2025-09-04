@@ -1,5 +1,11 @@
 name: 'Test'
 description: 'Test Python'
+
+inputs:
+  token:
+    description: 'Codecov token'
+    required: false
+
 runs:
   using: 'composite'
   steps:
@@ -14,3 +20,8 @@ runs:
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
+      with:
+        token: ${{ inputs.token }}
+        files: ./coverage.xml
+        flags: unittests
+        fail_ci_if_error: true

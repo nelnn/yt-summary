@@ -9,7 +9,6 @@ concurrency:
 
 jobs:
   lint:
-    name: Check changed Repos
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
