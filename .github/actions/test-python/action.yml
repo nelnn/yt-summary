@@ -1,13 +1,10 @@
 name: 'Test'
 description: 'Test Python'
+
 inputs:
-  path:
-    description: 'Path to point to for pytest'
+  token:
+    description: 'Codecov token'
     required: false
-    default: '.'
-  pkg-name:
-    description: 'The name of the package (for coverage)'
-    required: true
 
 runs:
   using: 'composite'
@@ -18,5 +15,13 @@ runs:
 
     - name: Test Python
       shell: bash
-      run: uv run pytest --cov=${{ inputs.pkg-name }} ${{ inputs.path }}
+      run: uv run pytest --cov --cov-branch --cov-report=xml
       if: ${{ always() }}
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ inputs.token }}
+        files: ./coverage.xml
+        flags: unittests
+        fail_ci_if_error: true

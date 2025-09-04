@@ -2,6 +2,8 @@ name: Code Quality
 
 on:
   push:
+    paths:
+      - 'yt_summary/**'
 
 concurrency:
   group: quality-${{ github.head_ref || github.ref }}
@@ -9,7 +11,6 @@ concurrency:
 
 jobs:
   lint:
-    name: Check changed Repos
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

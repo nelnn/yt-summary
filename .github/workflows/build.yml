@@ -1,0 +1,25 @@
+name: Build PyPi
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Python
+        if: always()
+        uses: ./.github/actions/builder
+
+      - name: Install build tools
+        run: uv pip install twine
+
+      - name: Build package
+        run: uv build
+
+      - name: Publish package
+        run: |
+          python -m twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}

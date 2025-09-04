@@ -2,8 +2,15 @@ name: Test
 
 on:
   push:
+    paths:
+      - 'yt_summary/**'
+      - 'tests/**'
+
   pull_request:
     types: [opened, reopened]
+    paths:
+      - 'yt_summary/**'
+      - 'tests/**'
 
 concurrency:
   group: test-${{ github.head_ref || github.ref }}
@@ -14,10 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Test yt-summary
         if: always()
         uses: ./.github/actions/test-python
         with:
-          path: 'tests/'
-          pkg-name: 'yt_summary'
+          token: ${{ secrets.CODECOV_TOKEN }}
