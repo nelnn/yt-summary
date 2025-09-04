@@ -17,3 +17,5 @@ jobs:
       - name: Test yt-summary
         if: always()
         uses: ./.github/actions/test-python
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
