@@ -12,7 +12,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    # FASTAPI
+    # FASTAPI (future use)
     API_TITLE: str = "Youtube Rag"
     API_DESCRIPTION: str = "A simple Youtube RAG application"
     API_VERSION: str = "1.0.0"
