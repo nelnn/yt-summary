@@ -2,8 +2,15 @@ name: Test
 
 on:
   push:
+    paths:
+      - 'yt_summary/**'
+      - 'tests/**'
+
   pull_request:
     types: [opened, reopened]
+    paths:
+      - 'yt_summary/**'
+      - 'tests/**'
 
 concurrency:
   group: test-${{ github.head_ref || github.ref }}
