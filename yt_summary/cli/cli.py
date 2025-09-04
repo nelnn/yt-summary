@@ -60,7 +60,7 @@ class YTSummaryCLI:
 
     def _get_version(self) -> str:
         try:
-            return version("yt-summary")
+            return version("yt-pls")
         except PackageNotFoundError:
             return "unknown"
 
