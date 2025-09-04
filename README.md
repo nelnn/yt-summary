@@ -2,16 +2,22 @@
 
 <p align="center">
     <a href="https://www.python.org/downloads/release/python-3131/">
-        <img src="https://img.shields.io/badge/python-3.13-blue.svg" alt="Python 3.13">
+        <img src="https://img.shields.io/badge/python-3.12%20|%203.13-blue.svg" alt="Python 3.13">
+    </a>
+    <a href="https://pypi.org/project/yt-pls/">
+        <img src="https://img.shields.io/pypi/v/yt-pls.svg" alt="Current Version">
+    </a>
+    <a href="https://codecov.io/github/nelnn/yt-summary" >
+     <img src="https://codecov.io/github/nelnn/yt-summary/graph/badge.svg?token=1485Y748BJ" alt="Code Coverage"/>
     </a>
     <a href="https://github.com/astral-sh/ty">
-        <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json">
+        <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json" alt="Type Checking: Ty">
     </a>
     <a href="https://github.com/astral-sh/ruff">
         <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Linting: Ruff">
     </a>
     <a href="LICENSE">
-        <img alt="License" src="https://img.shields.io/static/v1?logo=MIT&color=Blue&message=MIT&label=License"/>
+        <img alt="License" src="https://img.shields.io/static/v1?logo=MIT&color=Blue&message=MIT&label=License" alt="License">
     </a>
 </p>
 
@@ -33,11 +39,11 @@ pip install yt-pls
 
 If you want to use the Gemini and/or Claude models, you need to install the optional dependencies:
 ```bash
-pip install yt-pls[google]
-pip install yt-pls[anthropic]
+pip install "yt-pls[google]"
+pip install "yt-pls[anthropic]"
 
 # or
-pip install yt-pls[all]
+pip install "yt-pls[all]"
 ```
 
 ### Global
