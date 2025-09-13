@@ -35,7 +35,7 @@ class YTSummaryCLI:
 
                 check_provider_type(parsed_args.provider)
 
-            from yt_summary.llm_config import llm_configs
+            from yt_summary.config import llm_configs
 
             llm_config = llm_configs[parsed_args.provider]
 
@@ -53,7 +53,7 @@ class YTSummaryCLI:
             transcript_extractor = TranscriptExtractor()
             transcript = await transcript_extractor.fetch(parsed_args.url)
             summariser = summarisers[parsed_args.mode](llm=llm_model)
-            return f"\n {await summariser.summarise(transcript)}"
+            return f"\n{await summariser.summarise(transcript)}"
 
         except Exception as e:
             return str(e)
@@ -106,16 +106,8 @@ class YTSummaryCLI:
             "--mode",
             "-m",
             type=str,
-            default="compact",
-            help=(
-                "summarization mode: `compact` or `refined` (default: compact). "
-                "`compact`: List metadata, high level summary and Q&A with timestamps. "
-                "It utilises the `DocumentSummaryIndex` from LLamaIndex. "
-                "`refined`: List metadata, high level summary and a detailed, timestamped summary of key points. "
-                "It chunks the transcript (chunk_size=4096) and generates summaries for each chunk before"
-                "consolidating them by making multiple calls to the LLM asynchronously. "
-                "Be aware of the rate limits of your chosen LLM provider."
-            ),
+            default="simple",
+            help="summarization mode: `simple`, `compact` or `refined` (default: simple). ",
         )
 
         if len(sys.argv) == 1:

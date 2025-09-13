@@ -4,17 +4,16 @@ from requests import Session
 from youtube_transcript_api.proxies import ProxyConfig
 
 from yt_summary.extractors.transcript import TranscriptExtractor
+from yt_summary.run.getters import summarisers
 from yt_summary.schemas.enums import LLMProvidersEnum, SummarisationModesEnum
 from yt_summary.schemas.models import LLMModel
-from yt_summary.summarisers.refined_summariser import RefinedSummariser
-from yt_summary.summarisers.simple_summariser import SimpleSummariser
 
 
 async def get_youtube_summary(
     url: str,
     llm_provider: LLMProvidersEnum = LLMProvidersEnum.OPENAI,
     model_name: str = "gpt-5-mini-2025-08-07",
-    mode: SummarisationModesEnum = SummarisationModesEnum.COMPACT,
+    mode: SummarisationModesEnum = SummarisationModesEnum.SIMPLE,
     languages: list[str] | None = None,
     *,
     preserve_formatting: bool = False,
@@ -43,9 +42,5 @@ async def get_youtube_summary(
     transcript = await TranscriptExtractor(proxy_config=proxy_config, http_client=http_client).fetch(
         url, languages=languages if languages else ["en"], preserve_formatting=preserve_formatting
     )
-    match mode:
-        case SummarisationModesEnum.COMPACT:
-            summariser = SimpleSummariser(llm=LLMModel(provider=LLMProvidersEnum(llm_provider), model=model_name))
-        case SummarisationModesEnum.REFINED:
-            summariser = RefinedSummariser(llm=LLMModel(provider=LLMProvidersEnum(llm_provider), model=model_name))
+    summariser = summarisers[mode](llm=LLMModel(provider=LLMProvidersEnum(llm_provider), model=model_name))
     return await summariser.summarise(transcript)

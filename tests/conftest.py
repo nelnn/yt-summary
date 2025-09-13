@@ -4,7 +4,7 @@ import pytest
 from pydantic import HttpUrl
 from youtube_transcript_api import FetchedTranscript, FetchedTranscriptSnippet
 
-from yt_summary.llm_config import llm_configs
+from yt_summary.config import llm_configs
 from yt_summary.schemas.enums import LLMProvidersEnum
 from yt_summary.schemas.models import LLMModel, YoutubeMetadata, YoutubeTranscriptRaw
 

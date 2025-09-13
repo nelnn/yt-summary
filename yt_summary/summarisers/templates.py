@@ -156,3 +156,32 @@ COMPACT_SUMMARY_QA_PROMPT_TEMPLATE = """
 
     END CONVERSATION.
 """
+
+
+SIMPLE_SUMMARY_QA_PROMPT_TEMPLATE = """
+    You are given the metadata and full transcript of a youtube video.
+    Create a concise, high-level summary of the topics in this video.
+    Your summary should get the key points related to the main topic
+    of the video given its title.
+
+    RULES:
+    - Add line breaks immediately after headers and subheaders.
+
+    OUTPUT STRUCTURE:
+
+        # Author: Video Title
+
+        ## Metadata
+
+            - title
+            - author
+            - channel id
+            - url
+            - channel url
+            - thumbnail url
+            - language
+
+        ## Summary
+
+    {context_str}
+"""
