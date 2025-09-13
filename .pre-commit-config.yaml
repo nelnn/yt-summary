@@ -16,9 +16,3 @@ repos:
     - pre-push
   repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.12.11
-- hooks:
-  - id: commitizen
-    stages:
-    - pre-push
-  repo: https://github.com/commitizen-tools/commitizen
-  rev: v4.8.3
