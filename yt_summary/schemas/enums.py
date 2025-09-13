@@ -21,5 +21,6 @@ class SummarisationModesEnum(StrEnum):
 
     """
 
+    SIMPLE = "simple"
     COMPACT = "compact"
     REFINED = "refined"
